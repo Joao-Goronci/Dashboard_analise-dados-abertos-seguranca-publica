@@ -213,6 +213,7 @@ def clean_dataset(source_name: str, config: dict) -> pd.DataFrame:
     df.to_csv(output_path, index=False, encoding="utf-8-sig")
     return df
 
+# criacao das tabelas ja processadas para alimentar o dashboard e a home page, alem de uma tabela de fatos unificada para futuras analises
 
 def build_fact_table(cleaned_frames: dict[str, pd.DataFrame]) -> pd.DataFrame:
     fact_table = pd.concat(cleaned_frames.values(), ignore_index=True, sort=False)
@@ -245,71 +246,138 @@ def build_kpis_home(fact_table: pd.DataFrame) -> pd.DataFrame:
     return kpis
 
 
-def build_analytics(fact_table: pd.DataFrame, cleaned_frames: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]:
-    analytics: dict[str, pd.DataFrame] = {}
-
+def export_crimes_por_mes(fact_table: pd.DataFrame) -> pd.DataFrame:
     crimes_por_mes = (
-        fact_table.dropna(subset=["data_mes"]).groupby(["data_mes", "categoria_macro"], as_index=False).size().rename(columns={"size": "quantidade"}).sort_values(["data_mes", "categoria_macro"])
+        fact_table.dropna(subset=["data_mes"])
+        .groupby(["data_mes", "categoria_macro"], as_index=False)
+        .size()
+        .rename(columns={"size": "quantidade"})
+        .sort_values(["data_mes", "categoria_macro"])
     )
     crimes_por_mes.to_csv(PROCESSED_DIR / "crimes_por_mes.csv", index=False, encoding="utf-8-sig")
-    analytics["crimes_por_mes"] = crimes_por_mes
+    return crimes_por_mes
 
+
+def export_crimes_por_municipio(fact_table: pd.DataFrame) -> pd.DataFrame:
     crimes_por_municipio = (
-        fact_table.groupby(["municipio", "categoria_macro"], as_index=False).size().rename(columns={"size": "quantidade"}).sort_values(["quantidade", "municipio"], ascending=[False, True])
+        fact_table.groupby(["municipio", "categoria_macro"], as_index=False)
+        .size()
+        .rename(columns={"size": "quantidade"})
+        .sort_values(["quantidade", "municipio"], ascending=[False, True])
     )
     crimes_por_municipio.to_csv(PROCESSED_DIR / "crimes_por_municipio.csv", index=False, encoding="utf-8-sig")
-    analytics["crimes_por_municipio"] = crimes_por_municipio
+    return crimes_por_municipio
 
+
+def export_crimes_por_periodo(fact_table: pd.DataFrame) -> pd.DataFrame:
     crimes_por_periodo = (
-        fact_table.dropna(subset=["periodo_dia"]).groupby(["periodo_dia", "categoria_macro"], as_index=False).size().rename(columns={"size": "quantidade"}).sort_values(["quantidade", "periodo_dia"], ascending=[False, True])
+        fact_table.dropna(subset=["periodo_dia"])
+        .groupby(["periodo_dia", "categoria_macro"], as_index=False)
+        .size()
+        .rename(columns={"size": "quantidade"})
+        .sort_values(["quantidade", "periodo_dia"], ascending=[False, True])
     )
     crimes_por_periodo.to_csv(PROCESSED_DIR / "crimes_por_periodo.csv", index=False, encoding="utf-8-sig")
-    analytics["crimes_por_periodo"] = crimes_por_periodo
+    return crimes_por_periodo
 
+
+def export_top_bairros(fact_table: pd.DataFrame) -> pd.DataFrame:
     top_bairros = (
-        fact_table.dropna(subset=["bairro"]).groupby(["municipio", "bairro", "categoria_macro"], as_index=False).size().rename(columns={"size": "quantidade"}).sort_values(["quantidade", "municipio", "bairro"], ascending=[False, True, True])
+        fact_table.dropna(subset=["bairro"])
+        .groupby(["municipio", "bairro", "categoria_macro"], as_index=False)
+        .size()
+        .rename(columns={"size": "quantidade"})
+        .sort_values(["quantidade", "municipio", "bairro"], ascending=[False, True, True])
     )
     top_bairros.to_csv(PROCESSED_DIR / "top_bairros.csv", index=False, encoding="utf-8-sig")
-    analytics["top_bairros"] = top_bairros
+    return top_bairros
 
+
+def export_comparativo_furto_roubo(fact_table: pd.DataFrame) -> pd.DataFrame:
     comparativo_furto_roubo = fact_table[fact_table["fonte_dados"].isin(["furtos", "roubos"])]
     comparativo_furto_roubo = (
-        comparativo_furto_roubo.dropna(subset=["data_mes"]).groupby(["data_mes", "fonte_dados"], as_index=False).size().rename(columns={"size": "quantidade"}).sort_values(["data_mes", "fonte_dados"])
+        comparativo_furto_roubo.dropna(subset=["data_mes"])
+        .groupby(["data_mes", "fonte_dados"], as_index=False)
+        .size()
+        .rename(columns={"size": "quantidade"})
+        .sort_values(["data_mes", "fonte_dados"])
     )
     comparativo_furto_roubo.to_csv(PROCESSED_DIR / "comparativo_furto_roubo.csv", index=False, encoding="utf-8-sig")
-    analytics["comparativo_furto_roubo"] = comparativo_furto_roubo
+    return comparativo_furto_roubo
 
+
+def export_objetos_mais_roubados(cleaned_frames: dict[str, pd.DataFrame]) -> pd.DataFrame:
     objetos = cleaned_frames.get("objetos")
     if objetos is not None and "tipo_objeto" in objetos.columns:
         objetos_mais_roubados = (
-            objetos.dropna(subset=["tipo_objeto"]).groupby(["tipo_objeto", "acao_objeto"], as_index=False).size().rename(columns={"size": "quantidade"}).sort_values(["quantidade", "tipo_objeto"], ascending=[False, True])
+            objetos.dropna(subset=["tipo_objeto"])
+            .groupby(["tipo_objeto", "acao_objeto"], as_index=False)
+            .size()
+            .rename(columns={"size": "quantidade"})
+            .sort_values(["quantidade", "tipo_objeto"], ascending=[False, True])
         )
     else:
         objetos_mais_roubados = pd.DataFrame(columns=["tipo_objeto", "acao_objeto", "quantidade"])
-    objetos_mais_roubados.to_csv(PROCESSED_DIR / "objetos_mais_roubados.csv", index=False, encoding="utf-8-sig")
-    analytics["objetos_mais_roubados"] = objetos_mais_roubados
 
+    objetos_mais_roubados.to_csv(PROCESSED_DIR / "objetos_mais_roubados.csv", index=False, encoding="utf-8-sig")
+    return objetos_mais_roubados
+
+
+def export_perfil_vitimas(cleaned_frames: dict[str, pd.DataFrame]) -> pd.DataFrame:
     perfil_frames = []
+
     for dataset_name in ("homicidios", "violencia_domestica"):
         frame = cleaned_frames.get(dataset_name)
         if frame is None:
             continue
-        columns = [column for column in ["fonte_dados", "categoria_macro", "sexo", "genero", "cutis", "cor", "idade", "faixa_etaria", "municipio", "bairro"] if column in frame.columns]
+        columns = [
+            column
+            for column in [
+                "fonte_dados",
+                "categoria_macro",
+                "sexo",
+                "genero",
+                "cutis",
+                "cor",
+                "idade",
+                "faixa_etaria",
+                "municipio",
+                "bairro",
+            ]
+            if column in frame.columns
+        ]
         if columns:
             perfil_frames.append(frame[columns])
 
     perfil_vitimas = pd.concat(perfil_frames, ignore_index=True, sort=False) if perfil_frames else pd.DataFrame()
     perfil_vitimas.to_csv(PROCESSED_DIR / "perfil_vitimas.csv", index=False, encoding="utf-8-sig")
-    analytics["perfil_vitimas"] = perfil_vitimas
+    return perfil_vitimas
 
+
+def export_crimes_digitais_evolucao(fact_table: pd.DataFrame) -> pd.DataFrame:
     crimes_digitais_evolucao = fact_table[fact_table["categoria_macro"] == "digital"]
     crimes_digitais_evolucao = (
-        crimes_digitais_evolucao.dropna(subset=["data_mes"]).groupby(["data_mes", "municipio"], as_index=False).size().rename(columns={"size": "quantidade"}).sort_values(["data_mes", "quantidade"], ascending=[True, False])
+        crimes_digitais_evolucao.dropna(subset=["data_mes"])
+        .groupby(["data_mes", "municipio"], as_index=False)
+        .size()
+        .rename(columns={"size": "quantidade"})
+        .sort_values(["data_mes", "quantidade"], ascending=[True, False])
     )
     crimes_digitais_evolucao.to_csv(PROCESSED_DIR / "crimes_digitais_evolucao.csv", index=False, encoding="utf-8-sig")
-    analytics["crimes_digitais_evolucao"] = crimes_digitais_evolucao
+    return crimes_digitais_evolucao
 
-    return analytics
+
+def build_analytics(fact_table: pd.DataFrame, cleaned_frames: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]:
+    return {
+        "crimes_por_mes": export_crimes_por_mes(fact_table),
+        "crimes_por_municipio": export_crimes_por_municipio(fact_table),
+        "crimes_por_periodo": export_crimes_por_periodo(fact_table),
+        "top_bairros": export_top_bairros(fact_table),
+        "comparativo_furto_roubo": export_comparativo_furto_roubo(fact_table),
+        "objetos_mais_roubados": export_objetos_mais_roubados(cleaned_frames),
+        "perfil_vitimas": export_perfil_vitimas(cleaned_frames),
+        "crimes_digitais_evolucao": export_crimes_digitais_evolucao(fact_table),
+    }
 
 
 def main() -> None:
