@@ -91,6 +91,7 @@ def read_csv_with_fallback(path: Path) -> pd.DataFrame:
 
 def resolve_dataset_path(file_name: str) -> Path:
     path = RAW_DIR / file_name
+
     if path.exists():
         return path
 
@@ -100,6 +101,7 @@ def resolve_dataset_path(file_name: str) -> Path:
             return alternate
 
     alternate = RAW_DIR / f"{file_name}.csv"
+
     if alternate.exists():
         return alternate
 
@@ -112,6 +114,7 @@ def rename_by_aliases(df: pd.DataFrame) -> pd.DataFrame:
 
     for source_name, target_name in COLUMN_ALIASES.items():
         matched_column = lookup.get(canonicalize(source_name))
+
         if matched_column and matched_column not in rename_map:
             rename_map[matched_column] = target_name
 
@@ -132,6 +135,7 @@ def parse_time_to_hour(series: pd.Series) -> pd.Series:
     cleaned = series.astype("string").str.strip()
     parsed = pd.to_datetime(cleaned, format="%H:%M:%S", errors="coerce")
     missing = parsed.isna()
+    
     if missing.any():
         parsed.loc[missing] = pd.to_datetime(cleaned.loc[missing], format="%H:%M", errors="coerce")
     return parsed.dt.hour
