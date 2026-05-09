@@ -1,2 +1,2 @@
-﻿total_crimes,cidade_critica,horario_critico,crime_dominante
-43775,VILA VELHA,TARDE,CRIMES CONTRA PATRIMÔNIO: ESTELIONATO/FRAUDE
+﻿total_crimes,cidade_critica,horario_critico,crime_dominante,registros_sem_horario,percentual_com_horario
+43775,VILA VELHA,TARDE,CRIMES CONTRA PATRIMÔNIO: ESTELIONATO/FRAUDE,5619,87.16

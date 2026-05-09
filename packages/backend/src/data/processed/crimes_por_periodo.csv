@@ -2,6 +2,7 @@
 TARDE,patrimonial,9239
 MANHA,patrimonial,6419
 NOITE,patrimonial,4701
+SEM_HORARIO_INFORMADO,patrimonial,3557
 NOITE,violencia_social,2713
 NOITE,objetos,2512
 MADRUGADA,patrimonial,2188
@@ -11,7 +12,10 @@ MANHA,violencia_social,1548
 MANHA,objetos,1505
 MADRUGADA,objetos,1478
 MADRUGADA,violencia_social,1174
+SEM_HORARIO_INFORMADO,violencia_social,1157
+SEM_HORARIO_INFORMADO,objetos,754
 TARDE,digital,310
 MANHA,digital,219
+SEM_HORARIO_INFORMADO,digital,151
 NOITE,digital,149
 MADRUGADA,digital,53

@@ -235,12 +235,21 @@ def build_kpis_home(fact_table: pd.DataFrame) -> pd.DataFrame:
     valid = fact_table.dropna(subset=[column for column in ["data_fato", "municipio", "tipo_incidente"] if column in fact_table.columns])
 
     total_crimes = int(len(valid))
+    registros_sem_horario = int(fact_table["periodo_dia"].isna().sum()) if "periodo_dia" in fact_table.columns else 0
+    percentual_com_horario = round(((total_crimes - registros_sem_horario) / total_crimes) * 100, 2) if total_crimes else 0
     cidade_critica = valid["municipio"].value_counts().idxmax() if "municipio" in valid.columns and not valid.empty else pd.NA
     horario_critico = valid["periodo_dia"].value_counts().idxmax() if "periodo_dia" in valid.columns and not valid.empty else pd.NA
     crime_dominante = valid["tipo_incidente"].value_counts().idxmax() if "tipo_incidente" in valid.columns and not valid.empty else pd.NA
 
     kpis = pd.DataFrame([
-        {"total_crimes": total_crimes, "cidade_critica": cidade_critica, "horario_critico": horario_critico, "crime_dominante": crime_dominante}
+        {
+            "total_crimes": total_crimes,
+            "cidade_critica": cidade_critica,
+            "horario_critico": horario_critico,
+            "crime_dominante": crime_dominante,
+            "registros_sem_horario": registros_sem_horario,
+            "percentual_com_horario": percentual_com_horario,
+        }
     ])
     kpis.to_csv(PROCESSED_DIR / "kpis_home.csv", index=False, encoding="utf-8-sig")
     return kpis
@@ -270,8 +279,10 @@ def export_crimes_por_municipio(fact_table: pd.DataFrame) -> pd.DataFrame:
 
 
 def export_crimes_por_periodo(fact_table: pd.DataFrame) -> pd.DataFrame:
+    period_table = fact_table.copy()
+    period_table["periodo_dia"] = period_table["periodo_dia"].fillna("SEM_HORARIO_INFORMADO")
     crimes_por_periodo = (
-        fact_table.dropna(subset=["periodo_dia"])
+        period_table
         .groupby(["periodo_dia", "categoria_macro"], as_index=False)
         .size()
         .rename(columns={"size": "quantidade"})
