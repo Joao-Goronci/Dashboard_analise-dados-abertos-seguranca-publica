@@ -1,0 +1,17 @@
+﻿periodo_dia,categoria_macro,quantidade
+TARDE,patrimonial,9239
+MANHA,patrimonial,6419
+NOITE,patrimonial,4701
+NOITE,violencia_social,2713
+NOITE,objetos,2512
+MADRUGADA,patrimonial,2188
+TARDE,violencia_social,1998
+TARDE,objetos,1950
+MANHA,violencia_social,1548
+MANHA,objetos,1505
+MADRUGADA,objetos,1478
+MADRUGADA,violencia_social,1174
+TARDE,digital,310
+MANHA,digital,219
+NOITE,digital,149
+MADRUGADA,digital,53
