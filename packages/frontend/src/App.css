@@ -1,7 +1,9 @@
 .app-container {
   display: flex;
   min-height: 100vh;
-  background-color: #e0f2fe;
+  background:
+    radial-gradient(circle at top left, rgba(0, 0, 0, 0.06), transparent 30%),
+    linear-gradient(180deg, #f6f8fb 0%, #eef2f7 100%);
   padding: 16px;
   gap: 16px;
 }
