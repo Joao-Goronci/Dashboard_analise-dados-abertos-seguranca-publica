@@ -5,8 +5,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/grafico': 'http://localhost:5000',
-      '/chat': 'http://localhost:5000'
+      '/api': 'http://localhost:3001',
     }
   }
 })
