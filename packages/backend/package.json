@@ -2,23 +2,12 @@
   "name": "seguranca-publica-backend",
   "version": "1.0.0",
   "description": "Backend API para Dashboard de Segurança Pública",
-  "type": "module",
-  "main": "src/app.js",
+  "private": true,
+  "main": "src/main.py",
   "scripts": {
-    "dev": "nodemon src/app.js",
-    "start": "node src/app.js",
-    "lint": "eslint src",
-    "lint:fix": "eslint src --fix"
+    "dev": "python -m uvicorn src.main:app --reload --host 0.0.0.0 --port 3001",
+    "start": "python -m uvicorn src.main:app --host 0.0.0.0 --port 3001",
+    "check": "python -m py_compile src/main.py src/routes/dashboard_routes.py src/services/dashboard_data_service.py src/config/data_paths.py"
   },
-  "dependencies": {
-    "express": "^4.18.2",
-    "cors": "^2.8.5",
-    "dotenv": "^16.3.1",
-    "papaparse": "^5.4.1",
-    "axios": "^1.6.0"
-  },
-  "devDependencies": {
-    "nodemon": "^3.0.2",
-    "eslint": "^8.54.0"
-  }
+  "dependencies": {}
 }
