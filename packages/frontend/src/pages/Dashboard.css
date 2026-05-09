@@ -8,6 +8,12 @@
   padding: 20px;
 }
 
+.page-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
 .dashboard-hero {
   display: flex;
   justify-content: space-between;
@@ -15,6 +21,11 @@
   gap: 16px;
   padding-bottom: 8px;
   border-bottom: 1px solid #e2e8f0;
+}
+
+.dashboard-hero + .kpi-grid,
+.dashboard-hero + .chart-grid {
+  margin-top: -4px;
 }
 
 .dashboard-hero-meta {
@@ -155,6 +166,16 @@
   background: #ffffff;
 }
 
+.dashboard-placeholder strong {
+  display: block;
+  color: #0f172a;
+  font-size: clamp(1.8rem, 2.6vw, 2.4rem);
+}
+
+.dashboard-placeholder p {
+  margin-top: 4px;
+}
+
 .dashboard-placeholder.error {
   color: #991b1b;
 }
@@ -194,6 +215,10 @@
   .dashboard-shell {
     padding: 14px;
     min-height: auto;
+  }
+
+  .page-shell {
+    gap: 16px;
   }
 
   .dashboard-hero {
