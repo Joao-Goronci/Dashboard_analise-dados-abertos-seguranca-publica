@@ -2,7 +2,7 @@
 
 ## Visão Geral
 
-O projeto é estruturado como um **monorepo** com frontend React e backend Express, permitindo desenvolvimento sincronizado de ambas as camadas e compartilhamento de ferramentas e configurações.
+O projeto é estruturado como um **monorepo** com frontend React e backend Python (FastAPI), permitindo desenvolvimento sincronizado de ambas as camadas e compartilhamento de ferramentas e configurações.
 
 ## Estrutura do Monorepo
 
@@ -10,7 +10,7 @@ O projeto é estruturado como um **monorepo** com frontend React e backend Expre
 /
 ├── packages/
 │   ├── frontend/          # Aplicação React + Vite
-│   └── backend/           # API Express.js
+│   └── backend/           # API Python (FastAPI)
 ├── docs/                  # Documentação do projeto
 └── package.json           # Configuração do monorepo (npm workspaces)
 ```
@@ -138,51 +138,16 @@ export const dashboardService = {
 ### Estrutura de Diretórios
 
 ```
-packages/backend/src/
-├── config/                # Configurações
-│   ├── database.js
-│   └── env.js
-│
-├── middleware/            # Middlewares Express
-│   ├── errorHandler.js    # Tratamento de erros
-│   ├── logging.js         # Log de requisições
-│   ├── auth.js            # Autenticação (futuro)
-│   └── cors.js            # CORS (configurado em app.js)
-│
-├── routes/                # Definição de endpoints
-│   ├── graphics.js        # GET /api/graphics
-│   ├── chat.js            # POST /api/chat
-│   ├── crimes.js          # GET /api/crimes
-│   └── analytics.js       # GET /api/analytics (futuro)
-│
-├── controllers/           # Lógica de requisição/resposta
-│   ├── graphicsController.js
-│   ├── chatController.js
-│   └── crimeController.js
-│
-├── services/              # Lógica de negócio
-│   ├── graphicsService.js    # Processa dados de gráficos
-│   ├── chatService.js        # Processamento de chat
-│   └── crimeDataService.js   # Carrega e processa CSVs
-│
-├── utils/                 # Utilitários
-│   ├── logger.js
-│   ├── helpers.js
-│   └── validators.js
-│
-├── data/                  # Dados da aplicação
-│   ├── raw/               # CSVs brutos
-│   │   ├── crimes/
-│   │   │   ├── homicidios.csv
-│   │   │   ├── roubos.csv
-│   │   │   ├── furtos.csv
-│   │   │   └── metadata.json
-│   │   └── (dados em CSVs)
-│   │
-│   └── processed/         # Cache de dados processados
-│       └── aggregated.json
-│
-└── app.js                 # Aplicação Express principal
+packages/backend/
+├── src/
+│   ├── main.py                # Entrada ASGI (FastAPI)
+│   ├── config/                # Configurações (data paths, etc.)
+│   ├── routes/                # Routers (APIRouter)
+│   │   └── dashboard_routes.py
+│   ├── services/              # Lógica de negócio (carregamento/transformação de CSVs)
+│   └── data/                  # CSVs brutos e processados
+├── requirements.txt           # Dependências Python (fastapi, uvicorn, pandas...)
+└── .env.example
 ```
 
 ### Fluxo de uma Requisição
@@ -191,20 +156,20 @@ packages/backend/src/
 1. Cliente (Frontend)
    └─> GET /api/graphics/stats
 
-2. Express Middleware
-   └─> requestLogger
-   └─> cors
-   └─> json parser
+2. FastAPI Middleware (uvicorn)
+  └─> request logging
+  └─> CORS middleware
+  └─> JSON response handling
 
 3. Router
-   └─> router.get('/stats', handler)
+  └─> APIRouter (ex.: prefix `/api`) -> route handler
 
 4. Handler/Controller
-   └─> graphicsController.getStats()
+  └─> controller function (calls service layer)
 
 5. Service Layer
-   └─> graphicsService.aggregateData()
-   └─> crimeDataService.loadCSV()
+  └─> graphics_service.aggregate_data()
+  └─> dashboard_data_service.load_csv()
 
 6. Data Processing
    └─> Parse CSV
@@ -256,14 +221,14 @@ export const crimesService = {
 
 ### Configuração de Proxy (Vite)
 
-O Vite automaticamente redireciona chamadas `/api/*` para `http://localhost:5000`:
+O Vite pode redirecionar chamadas `/api/*` para o backend (ex.: `http://localhost:3001`):
 
 ```js
 // vite.config.js
 server: {
   proxy: {
     '/api': {
-      target: 'http://localhost:5000',
+      target: 'http://localhost:3001',
       changeOrigin: true,
       rewrite: (path) => path.replace(/^\/api/, '')
     }
@@ -279,7 +244,7 @@ const response = await fetch('/api/graphics/stats')
 const data = await response.json()
 
 // Backend recebe em
-// GET http://localhost:5000/api/graphics/stats
+// GET http://localhost:3001/api/graphics/stats
 ```
 
 ## Estado Global
@@ -366,13 +331,12 @@ export default ExampleComponent
 ### Root
 
 ```bash
-npm run dev             # Iniciar apenas frontend (Vite)
-npm run dev:all        # Iniciar frontend + backend com concurrently
-npm run dev:frontend   # Iniciar frontend
-npm run dev:backend    # Iniciar backend
-npm run build          # Build de ambos (frontend e backend)
-npm run lint           # Lint de ambos
-npm run test           # Testes
+npm run dev             # Inicia frontend (alias para dev:frontend)
+npm run dev:frontend    # Inicia apenas frontend (Vite)
+npm run dev:backend     # Inicia apenas backend (uvicorn)
+npm run build           # Build de ambos (executa build nas workspaces)
+npm run build:frontend  # Build do frontend
+npm run build:backend   # Build do backend (placeholder)
 ```
 
 ### Frontend
@@ -386,9 +350,10 @@ npm run preview        # Preview do build
 ### Backend
 
 ```bash
-npm run dev            # Nodemon (watch mode)
-npm run start          # Node direto
-npm run lint           # ESLint
+# Dentro de packages/backend
+npm run dev    # Inicia uvicorn (ex.: python -m uvicorn src.main:app --reload --port 3001)
+npm run start  # Inicia uvicorn em modo produção (sem --reload)
+npm run check  # Checagem rápida (py_compile)
 ```
 
 ## Padrões de Desenvolvimento
