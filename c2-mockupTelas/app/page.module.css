@@ -1,0 +1,42 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+@media (min-width: 1024px) {
+  .container {
+    flex-direction: row;
+  }
+}
+
+.chart {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tableRowHover {
+  transition: background-color 0.2s ease;
+}
+
+.scoreHigh {
+  color: rgb(16, 185, 129);
+}
+
+.scoreMedium {
+  color: rgb(245, 158, 11);
+}
+
+.scoreLow {
+  color: rgb(239, 68, 68);
+}
