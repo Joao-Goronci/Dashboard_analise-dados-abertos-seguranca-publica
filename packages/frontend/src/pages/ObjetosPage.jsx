@@ -15,7 +15,7 @@ function ObjetosPage({ data }) {
 
   const total = objectsSeries.reduce((sum, item) => sum + item.total, 0)
   const topObject = objectsSeries[0]?.objeto ?? '-'
-  const furtoTotal = objectsSeries.reduce((sum, item) => sum + item.furstado, 0)
+  const furtoTotal = objectsSeries.reduce((sum, item) => sum + item.furtado, 0)
   const rouboTotal = objectsSeries.reduce((sum, item) => sum + item.roubado, 0)
 
   return (
