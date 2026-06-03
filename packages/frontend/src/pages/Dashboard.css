@@ -3,8 +3,8 @@
   flex-direction: column;
   gap: 12px;
   min-height: calc(100vh - 32px);
-  border: 1px solid #0f172a;
-  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  border: 1px solid #E2E8F0;
+  background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
   padding: 12px;
 }
 
@@ -73,7 +73,7 @@
 .section-title h2 {
   font-size: 1.5rem;
   line-height: 1.1;
-  color: #0f172a;
+  color: #0F172A;
   font-weight: 600;
 }
 
@@ -120,10 +120,10 @@
   min-height: 110px;
   gap: 6px;
   padding: 12px;
-  border: 1px solid #cbd5e1;
+  border: 1px solid #E2E8F0;
   border-radius: 14px;
   background: #ffffff;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
 }
 
 @media (min-width: 640px) {
@@ -145,7 +145,7 @@
 }
 
 .kpi-label {
-  color: #64748b;
+  color: #475569;
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -263,10 +263,10 @@
 }
 
 .chart-card {
-  border: 1px solid #cbd5e1;
+  border: 1px solid #E2E8F0;
   border-radius: 14px;
   background: #ffffff;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -320,7 +320,7 @@
 }
 
 .chart-card-header p {
-  color: #64748b;
+  color: #475569;
   font-size: 0.8rem;
 }
 

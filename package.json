@@ -16,6 +16,7 @@
     "build:backend": "npm run build --workspace=packages/backend"
   },
   "devDependencies": {
+    "@types/file-saver": "^2.0.7",
     "concurrently": "^8.0.0"
   }
 }

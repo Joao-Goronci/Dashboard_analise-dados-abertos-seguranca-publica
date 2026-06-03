@@ -3,6 +3,7 @@ import { Bar, BarChart, Cell, CartesianGrid, Legend, Line, LineChart, Pie, PieCh
 import ChartCard from '../components/dashboard/ChartCard.jsx'
 import KpiCard from '../components/dashboard/KpiCard.jsx'
 import SectionTitle from '../components/dashboard/SectionTitle.jsx'
+import { COLORS } from '../utils/theme';
 import {
   aggregateMonthlySeries,
   aggregateMunicipalitySeries,
@@ -12,7 +13,7 @@ import {
 } from '../utils/dashboardTransforms.js'
 
 const CATEGORY = 'violencia_social'
-const GENDER_COLORS = ['#111827', '#64748b']
+const GENDER_COLORS = [COLORS.genderFeminino, COLORS.genderMasculino, COLORS.genderOutros];
 const RACE_COLORS = ['#111827', '#334155', '#475569', '#64748b']
 
 function ViolenciaSocialPage({ data }) {
@@ -60,7 +61,7 @@ function ViolenciaSocialPage({ data }) {
               <YAxis tick={{ fill: '#475569', fontSize: 12 }} />
               <Tooltip formatter={(value) => [formatCompactNumber(value), 'Ocorrências']} />
               <Legend />
-              <Line type="monotone" dataKey="total" stroke="#111827" strokeWidth={3} dot={{ r: 3 }} />
+              <Line type="monotone" dataKey="total" stroke={COLORS.violencia_social} strokeWidth={3} dot={{ r: 3 }} />
             </LineChart>
           </ResponsiveContainer>
         </ChartCard>
@@ -72,7 +73,7 @@ function ViolenciaSocialPage({ data }) {
               <XAxis type="number" tick={{ fill: '#475569', fontSize: 12 }} />
               <YAxis type="category" dataKey="municipio" width={130} tick={{ fill: '#475569', fontSize: 12 }} />
               <Tooltip formatter={(value) => [formatCompactNumber(value), 'Ocorrências']} />
-              <Bar dataKey="quantidade" fill="#0f172a" radius={[0, 8, 8, 0]} />
+              <Bar dataKey="quantidade" fill={COLORS.violencia_social} radius={[0, 8, 8, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </ChartCard>
@@ -87,16 +88,33 @@ function ViolenciaSocialPage({ data }) {
                 cx="50%"
                 cy="50%"
                 labelLine={false}
-                label={({ label, quantidade }) => `${label}: ${formatCompactNumber(quantidade)}`}
-                outerRadius={80}
+                outerRadius={70}
                 fill="#8884d8"
                 dataKey="quantidade"
+                nameKey="label"
               >
                 {genderSeries.map((_, index) => (
-                  <Cell key={`cell-${index}`} fill={GENDER_COLORS[index % GENDER_COLORS.length]} />
+                  <Cell 
+                    key={`cell-${index}`} 
+                    fill={GENDER_COLORS[index % GENDER_COLORS.length]} 
+                  />
                 ))}
               </Pie>
-              <Tooltip formatter={(value) => [formatCompactNumber(value), 'Vítimas']} />
+              <Tooltip 
+                formatter={(value, name, props) => {
+                  const categoryName = props?.payload?.label || 'Desconhecido';
+                  return [formatCompactNumber(value), categoryName];
+                }} 
+              />
+              <Legend
+                layout="vertical"
+                align="right"
+                verticalAlign="middle"
+                formatter={(value, entry) => {
+                  const quantidade = entry?.payload?.quantidade || 0;
+                  return `${value}: ${formatCompactNumber(quantidade)}`;
+                }}
+              />
             </PieChart>
           </ResponsiveContainer>
         </ChartCard>
@@ -108,7 +126,7 @@ function ViolenciaSocialPage({ data }) {
               <XAxis dataKey="label" tick={{ fill: '#475569', fontSize: 12 }} />
               <YAxis tick={{ fill: '#475569', fontSize: 12 }} />
               <Tooltip formatter={(value) => [formatCompactNumber(value), 'Vítimas']} />
-              <Bar dataKey="quantidade" fill="#475569" radius={[8, 8, 0, 0]} />
+              <Bar dataKey="quantidade" fill={COLORS.darkBar} radius={[8, 8, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </ChartCard>

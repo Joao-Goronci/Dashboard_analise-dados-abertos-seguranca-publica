@@ -3,6 +3,7 @@ import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAx
 import ChartCard from '../components/dashboard/ChartCard.jsx'
 import KpiCard from '../components/dashboard/KpiCard.jsx'
 import SectionTitle from '../components/dashboard/SectionTitle.jsx'
+import { COLORS } from '../utils/theme';
 import {
   aggregateComparisonSeries,
   aggregateMonthlySeries,
@@ -54,8 +55,8 @@ function PatrimonialPage({ data }) {
               <YAxis tick={{ fill: '#475569', fontSize: 12 }} />
               <Tooltip formatter={(value) => [formatCompactNumber(value), 'Ocorrências']} />
               <Legend />
-              <Bar dataKey="furtos" fill="#111827" radius={[8, 8, 0, 0]} />
-              <Bar dataKey="roubos" fill="#475569" radius={[8, 8, 0, 0]} />
+              <Bar dataKey="furtos" fill={COLORS.furto} radius={[8, 8, 0, 0]} />
+              <Bar dataKey="roubos" fill={COLORS.roubo} radius={[8, 8, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </ChartCard>
@@ -67,7 +68,7 @@ function PatrimonialPage({ data }) {
               <XAxis type="number" tick={{ fill: '#475569', fontSize: 12 }} />
               <YAxis type="category" dataKey="municipio" width={130} tick={{ fill: '#475569', fontSize: 12 }} />
               <Tooltip formatter={(value) => [formatCompactNumber(value), 'Ocorrências']} />
-              <Bar dataKey="quantidade" fill="#0f172a" radius={[0, 8, 8, 0]} />
+              <Bar dataKey="quantidade" fill={COLORS.patrimonial} radius={[0, 8, 8, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </ChartCard>

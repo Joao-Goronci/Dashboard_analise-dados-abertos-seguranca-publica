@@ -3,6 +3,7 @@ import { Bar, BarChart, CartesianGrid, Cell, Legend, Line, LineChart, Responsive
 import ChartCard from '../components/dashboard/ChartCard.jsx'
 import KpiCard from '../components/dashboard/KpiCard.jsx'
 import SectionTitle from '../components/dashboard/SectionTitle.jsx'
+import { COLORS } from '../utils/theme';
 import {
   aggregateCategoryMonthlySeries,
   aggregateMunicipalitySeries,
@@ -12,18 +13,18 @@ import {
 } from '../utils/dashboardTransforms.js'
 
 const CATEGORY_COLORS = {
-  patrimonial: '#111827',
-  violencia_social: '#475569',
-  digital: '#2563eb',
-  objetos: '#94a3b8',
-}
+  patrimonial: COLORS.patrimonial,
+  violencia_social: COLORS.violencia_social,
+  digital: COLORS.digital,
+  objetos: COLORS.objetos,
+};
 
 const CATEGORY_LABELS = {
   patrimonial: 'Patrimonial',
   violencia_social: 'Violência social',
   digital: 'Digital',
   objetos: 'Objetos',
-}
+};
 
 function HomePage({ data }) {
   const monthlySeries = aggregateCategoryMonthlySeries(data?.crimesPorMes ?? [])

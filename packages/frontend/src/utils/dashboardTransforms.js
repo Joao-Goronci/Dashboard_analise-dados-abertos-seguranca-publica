@@ -205,28 +205,55 @@ export function aggregateComparisonSeries(rows) {
 }
 
 export function aggregateProfileSeries(rows, field, options = {}) {
-  const grouped = new Map()
-  const categoryKey = options.category ? normalizeKey(options.category) : ''
+  const grouped = new Map();
+  const categoryKey = options.category ? normalizeKey(options.category) : '';
+
+  // Mapeamento para o campo 'sexo' (gênero)
+  const genderMapping = {
+    // Valores que devem ser agrupados em "Outros"
+    'S/I': 'OUTROS',
+    'INDETERMINADO': 'OUTROS',
+    'TRANSEXUAL': 'OUTROS',
+    // Se houver outras variantes (com acentos ou espaços), normalizeKey já trata
+  };
 
   rows.forEach((row) => {
-    if (categoryKey && normalizeKey(row.categoria_macro) !== categoryKey) return
+    if (categoryKey && normalizeKey(row.categoria_macro) !== categoryKey) return;
 
-    const rawValue = row[field]
-    const normalizedValue = normalizeKey(rawValue)
-    if (!normalizedValue) return
+    let rawValue = row[field];
+    if (!rawValue) return;
 
-    const current = grouped.get(normalizedValue) ?? {
-      label: toTitleCase(rawValue),
-      quantidade: 0,
+    let normalizedValue = normalizeKey(rawValue);
+
+    // Se for o campo 'sexo', aplica o mapeamento
+    if (field === 'sexo') {
+      // Primeiro tenta o mapeamento exato
+      if (genderMapping[normalizedValue]) {
+        normalizedValue = genderMapping[normalizedValue];
+      }
+      // Também pode capturar 'OUTROS' já existente, mas mantemos
     }
 
-    current.quantidade += 1
-    grouped.set(normalizedValue, current)
-  })
+    // Valor final para exibição (rótulo amigável)
+    let displayLabel;
+    if (field === 'sexo' && normalizedValue === 'OUTROS') {
+      displayLabel = 'Outros';
+    } else {
+      displayLabel = toTitleCase(rawValue);
+    }
+
+    const current = grouped.get(normalizedValue) ?? {
+      label: displayLabel,
+      quantidade: 0,
+    };
+
+    current.quantidade += 1;
+    grouped.set(normalizedValue, current);
+  });
 
   return Array.from(grouped.values())
     .sort((left, right) => right.quantidade - left.quantidade)
-    .slice(0, options.limit ?? 8)
+    .slice(0, options.limit ?? 8);
 }
 
 export function aggregateObjectsSeries(rows, options = {}) {

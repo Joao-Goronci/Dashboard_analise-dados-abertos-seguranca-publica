@@ -3,6 +3,7 @@ import { Bar, BarChart, CartesianGrid, Legend, Line, LineChart, ResponsiveContai
 import ChartCard from '../components/dashboard/ChartCard.jsx'
 import KpiCard from '../components/dashboard/KpiCard.jsx'
 import SectionTitle from '../components/dashboard/SectionTitle.jsx'
+import { COLORS } from '../utils/theme';
 import {
   aggregateMonthlySeries,
   aggregateMunicipalitySeries,
@@ -53,7 +54,7 @@ function DigitalPage({ data }) {
               <YAxis tick={{ fill: '#475569', fontSize: 12 }} />
               <Tooltip formatter={(value) => [formatCompactNumber(value), 'Ocorrências']} />
               <Legend />
-              <Line type="monotone" dataKey="total" stroke="#2563eb" strokeWidth={3} dot={{ r: 3 }} />
+              <Line type="monotone" dataKey="total" stroke={COLORS.digital} strokeWidth={3} dot={{ r: 3 }} />
             </LineChart>
           </ResponsiveContainer>
         </ChartCard>
@@ -65,8 +66,8 @@ function DigitalPage({ data }) {
               <XAxis type="number" tick={{ fill: '#475569', fontSize: 12 }} />
               <YAxis type="category" dataKey="municipio" width={130} tick={{ fill: '#475569', fontSize: 12 }} />
               <Tooltip formatter={(value) => [formatCompactNumber(value), 'Ocorrências']} />
-              <Bar dataKey="quantidade" fill="#111827" radius={[0, 8, 8, 0]} />
-            </BarChart>
+              <Bar dataKey="quantidade" fill={COLORS.digital} radius={[0, 8, 8, 0]} />
+              </BarChart>
           </ResponsiveContainer>
         </ChartCard>
       </section>
