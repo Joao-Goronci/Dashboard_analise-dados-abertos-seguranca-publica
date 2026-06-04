@@ -1,4 +1,3 @@
-// src/App.jsx
 import { useEffect, useMemo, useState, useRef } from 'react';
 import Dashboard from './pages/Dashboard.jsx';
 import DigitalPage from './pages/DigitalPage.jsx';
@@ -6,7 +5,7 @@ import ObjetosPage from './pages/ObjetosPage.jsx';
 import PatrimonialPage from './pages/PatrimonialPage.jsx';
 import ViolenciaSocialPage from './pages/ViolenciaSocialPage.jsx';
 import FiltersPanel from './components/dashboard/FiltersPanel.jsx';
-import { filterByDateRange } from './utils/dashboardFilters.js';
+import { filterByDateRange, filterByMunicipio, filterByCategorias } from './utils/dashboardFilters.js';
 import './App.css';
 
 const API_URL = '/api/dashboard';
@@ -23,9 +22,15 @@ function App() {
   const [rawData, setRawData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  
+  // Estados dos filtros
   const [dateRange, setDateRange] = useState({ start: null, end: null });
+  const [selectedMunicipio, setSelectedMunicipio] = useState('');
+  const [selectedCategorias, setSelectedCategorias] = useState([]);
+  
   const pageRef = useRef(null);
 
+  // Carregar dados
   useEffect(() => {
     const controller = new AbortController();
     async function loadDashboard() {
@@ -49,23 +54,59 @@ function App() {
     return () => controller.abort();
   }, []);
 
-  // Dados filtrados por intervalo de datas
+  // Listas únicas para filtros (extraídas dos dados brutos)
+  const availableMunicipios = useMemo(() => {
+    if (!rawData?.crimesPorMunicipio) return [];
+    const municipios = [...new Set(rawData.crimesPorMunicipio.map(item => item.municipio))];
+    return municipios.sort();
+  }, [rawData]);
+
+  const availableCategorias = ['patrimonial', 'violencia_social', 'digital', 'objetos'];
+
+  // Função de filtragem combinada
   const filteredData = useMemo(() => {
     if (!rawData) return null;
-    if (!dateRange.start && !dateRange.end) return rawData;
 
-    const applyFilter = (series) => filterByDateRange(series, dateRange.start, dateRange.end, 'data_mes');
+    // Aplica filtros em cada dataset relevante
+    const applyDateFilter = (series) => filterByDateRange(series, dateRange.start, dateRange.end, 'data_mes');
+    const applyMunicipioFilter = (series) => filterByMunicipio(series, selectedMunicipio);
+    const applyCategoriasFilter = (series) => filterByCategorias(series, selectedCategorias);
+
+    // Datasets que possuem data_mes
+    const crimesPorMesFiltered = applyCategoriasFilter(applyDateFilter(rawData.crimesPorMes));
+    const comparativoFurtoRouboFiltered = applyDateFilter(rawData.comparativoFurtoRoubo);
+    const crimesDigitaisEvolucaoFiltered = applyDateFilter(rawData.crimesDigitaisEvolucao);
     
+    // Datasets que possuem municipio
+    const crimesPorMunicipioFiltered = applyMunicipioFilter(applyCategoriasFilter(rawData.crimesPorMunicipio));
+    const topBairrosFiltered = applyMunicipioFilter(applyCategoriasFilter(rawData.topBairros));
+    
+    // Perfil de vítimas (filtra por categoria e município)
+    let perfilVitimasFiltered = rawData.perfilVitimas || [];
+    if (selectedCategorias.length) {
+      perfilVitimasFiltered = perfilVitimasFiltered.filter(item => selectedCategorias.includes(item.categoria_macro));
+    }
+    if (selectedMunicipio) {
+      perfilVitimasFiltered = perfilVitimasFiltered.filter(item => item.municipio === selectedMunicipio);
+    }
+
+    // Objetos (filtra por categoria se necessário - objetos não tem categoria, mas pode filtrar indiretamente? Deixamos como está)
+    const objetosMaisRoubadosFiltered = rawData.objetosMaisRoubados || [];
+
     return {
       ...rawData,
-      crimesPorMes: applyFilter(rawData.crimesPorMes),
-      comparativoFurtoRoubo: applyFilter(rawData.comparativoFurtoRoubo),
-      crimesDigitaisEvolucao: applyFilter(rawData.crimesDigitaisEvolucao),
-      // outros datasets que possuam data_mes podem ser adicionados
+      kpisHome: rawData.kpisHome, // KPIs não filtrados (opcional)
+      crimesPorMes: crimesPorMesFiltered,
+      crimesPorMunicipio: crimesPorMunicipioFiltered,
+      crimesPorPeriodo: rawData.crimesPorPeriodo, // período não tem data, mantém
+      topBairros: topBairrosFiltered,
+      comparativoFurtoRoubo: comparativoFurtoRouboFiltered,
+      objetosMaisRoubados: objetosMaisRoubadosFiltered,
+      perfilVitimas: perfilVitimasFiltered,
+      crimesDigitaisEvolucao: crimesDigitaisEvolucaoFiltered,
     };
-  }, [rawData, dateRange]);
+  }, [rawData, dateRange, selectedMunicipio, selectedCategorias]);
 
-  // Dados adicionais para exportação (usando rawData completo ou filtrado? Usaremos rawData para ter tudo)
   const exportAdditionalData = useMemo(() => {
     if (!rawData) return {};
     return {
@@ -98,7 +139,7 @@ function App() {
           <p className="app-kicker">Segurança pública ES 2025</p>
           <h1>Dashboard analítico interativo</h1>
           <p className="app-description">
-            Dados publicos de segurança do Espírito Santo.
+            Navegue entre as páginas e utilize o painel de filtros para refinar a visualização.
           </p>
         </div>
         <div className="header-controls">
@@ -117,11 +158,17 @@ function App() {
           <FiltersPanel 
             pageRef={pageRef}
             pageTitle={pageTitle}
-            pageData={filteredData} 
+            pageData={filteredData}
             additionalData={exportAdditionalData}
             dateRange={dateRange}
             onDateRangeChange={setDateRange}
-            rawData={rawData} 
+            rawData={rawData}
+            selectedMunicipio={selectedMunicipio}
+            onMunicipioChange={setSelectedMunicipio}
+            selectedCategorias={selectedCategorias}
+            onCategoriasChange={setSelectedCategorias}
+            availableMunicipios={availableMunicipios}
+            availableCategorias={availableCategorias}
           />
         </div>
       </header>
