@@ -1,3 +1,5 @@
+// src/utils/dashboardFilters.js
+
 export function getMonthKey(value) {
   if (!value) return '';
   const asString = String(value);
@@ -20,7 +22,7 @@ export function formatMonthLabel(value) {
 }
 
 export function filterByDateRange(rows, startDateStr, endDateStr, dateField = 'data_mes') {
-  if (!rows) return [];
+  if (!rows || !Array.isArray(rows)) return [];
   if (!startDateStr && !endDateStr) return rows;
   const start = startDateStr ? new Date(startDateStr) : null;
   const end = endDateStr ? new Date(endDateStr) : null;
@@ -33,33 +35,13 @@ export function filterByDateRange(rows, startDateStr, endDateStr, dateField = 'd
 }
 
 export function filterByMunicipio(rows, municipio) {
-  if (!municipio || municipio === 'todos') return rows;
-  return rows.filter(row => row.municipio && row.municipio.toLowerCase() === municipio.toLowerCase());
-}
-
-export function filterByCategorias(rows, categorias) {
-  if (!categorias || categorias.length === 0) return rows;
-  return rows.filter(row => categorias.includes(row.categoria_macro));
-}
-
-export function getUniqueMunicipios(data, datasetKey = 'crimesPorMunicipio') {
-  if (!data || !data[datasetKey]) return [];
-  const municipios = data[datasetKey].map(item => item.municipio).filter(Boolean);
-  return [...new Set(municipios)].sort();
-}
-
-export function getUniqueCategorias(data, datasetKey = 'crimesPorMes') {
-  if (!data || !data[datasetKey]) return ['patrimonial', 'violencia_social', 'digital', 'objetos'];
-  const categorias = data[datasetKey].map(item => item.categoria_macro).filter(Boolean);
-  return [...new Set(categorias)].sort();
-}
-
-export function filterByMunicipio(rows, municipio) {
-  if (!municipio || !rows) return rows || [];
+  if (!rows || !Array.isArray(rows)) return [];
+  if (!municipio) return rows;
   return rows.filter(row => row.municipio === municipio);
 }
 
 export function filterByCategorias(rows, categorias) {
-  if (!categorias || categorias.length === 0 || !rows) return rows || [];
+  if (!rows || !Array.isArray(rows)) return [];
+  if (!categorias || categorias.length === 0) return rows;
   return rows.filter(row => categorias.includes(row.categoria_macro));
 }

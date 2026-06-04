@@ -148,6 +148,7 @@
   flex-wrap: wrap;
 }
 
+/* ========== BOTÃO FILTROS ========== */
 .filters-toggle-button {
   background: #0f172a;
   border: none;
@@ -177,21 +178,16 @@
   margin-left: 4px;
 }
 
-/* Painel expansível */
+/* ========== PAINEL DE FILTROS - MAIS LARGO E SOBREPOSTO ========== */
 .filters-panel {
-  position: absolute;
-  top: calc(100% + 8px);
-  right: 0;
-  width: 480px;
-  max-width: 90vw;
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 20px;
-  box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.15);
-  z-index: 1000;
+  box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.25);
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 .filters-panel-header {
   display: flex;
@@ -282,7 +278,12 @@
   transform: translateY(-1px);
 }
 
-/* DateRangeSlider */
+.filters-panel-portal {
+  position: fixed;
+  z-index: 9999;
+}
+
+/* ========== DATE RANGE SLIDER - SEM SOBREPOSIÇÃO ========== */
 .date-range-slider {
   margin: 16px 0;
   padding: 0 8px;
@@ -291,16 +292,23 @@
   margin: 16px 8px 20px 8px;
 }
 .rc-slider {
-  margin-bottom: 24px;
+  margin-bottom: 32px;       /* Mais espaço para os rótulos */
 }
 .rc-slider-mark {
-  top: 20px;
+  top: 22px;
 }
 .rc-slider-mark-text {
   font-size: 10px;
   white-space: nowrap;
-  transform: rotate(-45deg) translateX(-10px);
+  transform: rotate(-25deg) translateX(-8px);  /* Menos inclinação para evitar sobreposição extrema */
   transform-origin: top left;
+}
+/* Para telas pequenas, reduzimos ainda mais a inclinação */
+@media (max-width: 640px) {
+  .rc-slider-mark-text {
+    transform: rotate(-15deg) translateX(-4px);
+    font-size: 9px;
+  }
 }
 .date-range-value {
   text-align: center;
@@ -322,7 +330,7 @@
   margin-bottom: 16px;
 }
 .date-range-hint {
-  margin-top: 20px;
+  margin-top: 28px;          /* Mais espaço após o slider */
   font-size: 0.8rem;
   text-align: center;
   background: #f1f5f9;
@@ -337,7 +345,7 @@
   padding: 12px;
 }
 
-/* Global Filters */
+/* ========== FILTROS GLOBAIS ========== */
 .global-filters {
   display: flex;
   flex-direction: column;
@@ -417,20 +425,6 @@
   color: #64748b;
   margin-top: 4px;
 }
-@media (max-width: 640px) {
-  .filters-panel {
-    width: calc(100vw - 32px);
-    right: 0;
-    left: 0;
-    margin: 0 auto;
-  }
-  .filters-section {
-    grid-template-columns: 1fr;
-  }
-  .filter-group.full-width {
-    grid-column: span 1;
-  }
-}
 .category-buttons {
   display: flex;
   flex-wrap: wrap;
@@ -454,7 +448,7 @@
   background: #e2e8f0;
 }
 
-/* Responsividade para mobile */
+/* ========== RESPONSIVIDADE MOBILE ========== */
 @media (max-width: 768px) {
   .app-container {
     padding: 10px;
@@ -482,7 +476,7 @@
     font-size: 0.85rem;
   }
 
-    .header-controls {
+  .header-controls {
     width: 100%;
     justify-content: space-between;
   }
@@ -492,4 +486,10 @@
     left: 0;
     margin: 0 auto;
   }
+}
+
+.responsive-container,
+.recharts-wrapper,
+.chart-card {
+  isolation: isolate;
 }
