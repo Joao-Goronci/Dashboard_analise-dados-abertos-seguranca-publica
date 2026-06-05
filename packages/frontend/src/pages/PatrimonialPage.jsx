@@ -1,29 +1,34 @@
-import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
-
-import ChartCard from '../components/dashboard/ChartCard.jsx'
-import KpiCard from '../components/dashboard/KpiCard.jsx'
-import SectionTitle from '../components/dashboard/SectionTitle.jsx'
-import { COLORS } from '../utils/theme';
+import { useRef } from 'react';
+import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis, BarChart, Bar } from 'recharts';
+import ChartCard from '../components/dashboard/ChartCard.jsx';
+import KpiCard from '../components/dashboard/KpiCard.jsx';
+import SectionTitle from '../components/dashboard/SectionTitle.jsx';
 import {
   aggregateComparisonSeries,
   aggregateMonthlySeries,
   aggregateMunicipalitySeries,
   aggregateTopNeighborhoods,
   formatCompactNumber,
-} from '../utils/dashboardTransforms.js'
+} from '../utils/dashboardTransforms.js';
 
-const CATEGORY = 'patrimonial'
+const CATEGORY = 'patrimonial';
 
-function PatrimonialPage({ data }) {
-  const monthlySeries = aggregateMonthlySeries(data?.crimesPorMes ?? [], CATEGORY)
-  const municipalitySeries = aggregateMunicipalitySeries(data?.crimesPorMunicipio ?? [], { category: CATEGORY, limit: 10 })
-  const neighborhoodSeries = aggregateTopNeighborhoods(data?.topBairros ?? [], { category: CATEGORY, limit: 10 })
-  const comparisonSeries = aggregateComparisonSeries(data?.comparativoFurtoRoubo ?? [])
+function PatrimonialPage({ data, onMunicipioClick }) {
+  // Verificação de segurança: se data estiver vazio, retorna loading ou vazio
+  if (!data) {
+    return <div className="dashboard-placeholder">Carregando dados patrimoniais...</div>;
+  }
 
-  const total = monthlySeries.reduce((sum, item) => sum + item.total, 0)
-  const topMunicipio = municipalitySeries[0]?.municipio ?? '-'
-  const topBairro = neighborhoodSeries[0]?.bairro ?? '-'
-  const topMonth = monthlySeries.at(-1)?.mes ?? '-'
+  const chartRef = useRef();
+  const monthlySeries = aggregateMonthlySeries(data?.crimesPorMes ?? [], CATEGORY);
+  const municipalitySeries = aggregateMunicipalitySeries(data?.crimesPorMunicipio ?? [], { category: CATEGORY, limit: 10 });
+  const neighborhoodSeries = aggregateTopNeighborhoods(data?.topBairros ?? [], { category: CATEGORY, limit: 10 });
+  const comparisonSeries = aggregateComparisonSeries(data?.comparativoFurtoRoubo ?? []);
+
+  const total = monthlySeries.reduce((sum, item) => sum + (item.total || 0), 0);
+  const topMunicipio = municipalitySeries[0]?.municipio ?? '-';
+  const topBairro = neighborhoodSeries[0]?.bairro ?? '-';
+  const topMonth = monthlySeries.at(-1)?.mes ?? '-';
 
   return (
     <div className="page-shell">
@@ -47,28 +52,43 @@ function PatrimonialPage({ data }) {
       </section>
 
       <section className="chart-grid chart-grid-primary">
-        <ChartCard title="Furtos x roubos" subtitle="Comparativo mensal das duas submodalidades">
+        {/* Comparativo furto x roubo como gráfico de linhas */}
+        <ChartCard 
+          title="Furtos x roubos (evolução mensal)" 
+          subtitle="Comparativo das duas submodalidades ao longo do tempo"
+        >
           <ResponsiveContainer width="100%" height={320}>
-            <BarChart data={comparisonSeries} margin={{ top: 10, right: 20, left: 0, bottom: 10 }}>
+            <LineChart data={comparisonSeries} margin={{ top: 10, right: 20, left: 0, bottom: 10 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
               <XAxis dataKey="mes" tick={{ fill: '#475569', fontSize: 12 }} />
               <YAxis tick={{ fill: '#475569', fontSize: 12 }} />
               <Tooltip formatter={(value) => [formatCompactNumber(value), 'Ocorrências']} />
               <Legend />
-              <Bar dataKey="furtos" fill={COLORS.furto} radius={[8, 8, 0, 0]} />
-              <Bar dataKey="roubos" fill={COLORS.roubo} radius={[8, 8, 0, 0]} />
-            </BarChart>
+              <Line type="monotone" dataKey="furtos" name="Furtos" stroke="#3B82F6" strokeWidth={3} dot={{ r: 4 }} />
+              <Line type="monotone" dataKey="roubos" name="Roubos" stroke="#64748B" strokeWidth={3} dot={{ r: 4 }} />
+            </LineChart>
           </ResponsiveContainer>
         </ChartCard>
 
-        <ChartCard title="Municípios patrimoniais" subtitle="Ranking consolidado da categoria patrimonial">
+        {/* Municípios patrimoniais com drill-down */}
+        <ChartCard title="Municípios patrimoniais" subtitle="Ranking consolidado da categoria patrimonial. Clique em uma barra para filtrar.">
           <ResponsiveContainer width="100%" height={320}>
             <BarChart data={municipalitySeries} layout="vertical" margin={{ top: 10, right: 20, left: 30, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
               <XAxis type="number" tick={{ fill: '#475569', fontSize: 12 }} />
               <YAxis type="category" dataKey="municipio" width={130} tick={{ fill: '#475569', fontSize: 12 }} />
               <Tooltip formatter={(value) => [formatCompactNumber(value), 'Ocorrências']} />
-              <Bar dataKey="quantidade" fill={COLORS.patrimonial} radius={[0, 8, 8, 0]} />
+              <Bar
+                dataKey="quantidade"
+                fill="#0f172a"
+                radius={[0, 8, 8, 0]}
+                cursor="pointer"
+                onClick={(data) => {
+                  if (data && data.payload && data.payload.municipio && onMunicipioClick) {
+                    onMunicipioClick(data.payload.municipio);
+                  }
+                }}
+              />
             </BarChart>
           </ResponsiveContainer>
         </ChartCard>
@@ -88,7 +108,7 @@ function PatrimonialPage({ data }) {
         </ChartCard>
       </section>
     </div>
-  )
+  );
 }
 
-export default PatrimonialPage
+export default PatrimonialPage;
