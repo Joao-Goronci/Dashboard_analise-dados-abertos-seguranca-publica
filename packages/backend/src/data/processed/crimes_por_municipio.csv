@@ -1,277 +1,275 @@
 ﻿municipio,categoria_macro,quantidade
-VILA VELHA,patrimonial,4609
-VITORIA,patrimonial,4239
-SERRA,patrimonial,3863
-CARIACICA,patrimonial,2831
-VILA VELHA,objetos,1637
-SERRA,objetos,1537
-VITORIA,objetos,1505
-CARIACICA,objetos,1267
-LINHARES,patrimonial,1219
-CACHOEIRO DE ITAPEMIRIM,patrimonial,1187
-GUARAPARI,patrimonial,1054
-SERRA,violencia_social,1000
-VILA VELHA,violencia_social,815
-CARIACICA,violencia_social,742
-COLATINA,patrimonial,702
-ARACRUZ,patrimonial,564
-VITORIA,violencia_social,503
-CACHOEIRO DE ITAPEMIRIM,violencia_social,489
-SAO MATEUS,patrimonial,478
-LINHARES,violencia_social,472
-GUARAPARI,objetos,402
-COLATINA,violencia_social,399
-LINHARES,objetos,359
-ARACRUZ,violencia_social,358
-VIANA,patrimonial,357
-MARATAIZES,patrimonial,354
-SAO MATEUS,violencia_social,301
-GUARAPARI,violencia_social,292
-NOVA VENECIA,patrimonial,260
-ITAPEMIRIM,patrimonial,225
-BARRA DE SAO FRANCISCO,patrimonial,214
-SERRA,digital,188
-PIUMA,patrimonial,185
-VITORIA,digital,173
-SAO GABRIEL DA PALHA,patrimonial,168
-ANCHIETA,patrimonial,163
-NOVA VENECIA,violencia_social,155
-CASTELO,patrimonial,151
-GUACUI,patrimonial,151
-VENDA NOVA DO IMIGRANTE,patrimonial,151
-BAIXO GUANDU,patrimonial,150
-ARACRUZ,objetos,148
-MARATAIZES,violencia_social,144
-CACHOEIRO DE ITAPEMIRIM,objetos,137
-VIANA,violencia_social,137
-ITAPEMIRIM,violencia_social,136
-SANTA MARIA DE JETIBA,patrimonial,133
-BARRA DE SAO FRANCISCO,violencia_social,132
-SANTA MARIA DE JETIBA,violencia_social,126
-CONCEICAO DA BARRA,patrimonial,122
-SAO MATEUS,objetos,109
-SAO GABRIEL DA PALHA,violencia_social,103
-FUNDAO,patrimonial,101
-IUNA,patrimonial,101
-ANCHIETA,violencia_social,100
-MONTANHA,patrimonial,93
-SOORETAMA,patrimonial,93
-ALEGRE,patrimonial,91
-COLATINA,objetos,90
-ALEGRE,violencia_social,89
-SANTA TERESA,patrimonial,86
-CASTELO,violencia_social,85
-COLATINA,digital,84
-MIMOSO DO SUL,patrimonial,84
-VIANA,objetos,82
-MARATAIZES,objetos,81
-PINHEIROS,patrimonial,81
-AFONSO CLAUDIO,violencia_social,80
-IBATIBA,patrimonial,80
-MARECHAL FLORIANO,patrimonial,80
-BAIXO GUANDU,violencia_social,76
-AFONSO CLAUDIO,patrimonial,74
-PEDRO CANARIO,patrimonial,73
-IUNA,violencia_social,70
-IBATIBA,violencia_social,69
-JAGUARE,violencia_social,68
-CARIACICA,digital,67
-CONCEICAO DA BARRA,violencia_social,67
-PIUMA,violencia_social,67
-PANCAS,patrimonial,66
-PRESIDENTE KENNEDY,violencia_social,66
-VENDA NOVA DO IMIGRANTE,violencia_social,66
-VILA VELHA,digital,66
-GUACUI,violencia_social,65
-VARGEM ALTA,patrimonial,61
-DOMINGOS MARTINS,patrimonial,60
-JAGUARE,patrimonial,60
-MANTENOPOLIS,patrimonial,58
-JERONIMO MONTEIRO,patrimonial,55
-RIO BANANAL,patrimonial,55
-JOAO NEIVA,patrimonial,54
-PRESIDENTE KENNEDY,patrimonial,52
-FUNDAO,violencia_social,50
-SOORETAMA,violencia_social,50
-ALFREDO CHAVES,patrimonial,49
-BOA ESPERANCA,violencia_social,49
-MARILANDIA,patrimonial,49
-SAO JOSE DO CALCADO,patrimonial,49
-PINHEIROS,violencia_social,48
-VILA VALERIO,patrimonial,47
-MONTANHA,violencia_social,46
-IRUPI,patrimonial,45
-BOA ESPERANCA,patrimonial,44
-RIO BANANAL,violencia_social,44
-ECOPORANGA,violencia_social,43
-ITAPEMIRIM,objetos,43
-JOAO NEIVA,violencia_social,43
-AGUA DOCE DO NORTE,patrimonial,41
-BARRA DE SAO FRANCISCO,objetos,41
-CONCEICAO DA BARRA,objetos,41
-IBIRACU,patrimonial,41
-MARECHAL FLORIANO,violencia_social,41
-MIMOSO DO SUL,violencia_social,41
-MUNIZ FREIRE,patrimonial,41
-MUQUI,patrimonial,41
-PIUMA,objetos,41
-JERONIMO MONTEIRO,violencia_social,40
-ATILIO VIVACQUA,patrimonial,38
-SAO MATEUS,digital,38
-CONCEICAO DO CASTELO,patrimonial,37
-SAO GABRIEL DA PALHA,objetos,37
-NOVA VENECIA,objetos,36
-PANCAS,violencia_social,36
-SOORETAMA,objetos,36
-DOMINGOS MARTINS,violencia_social,35
-SANTA TERESA,violencia_social,35
-ARACRUZ,digital,34
-ITAGUACU,patrimonial,34
-RIO NOVO DO SUL,patrimonial,34
-ECOPORANGA,patrimonial,33
-ITAGUACU,violencia_social,33
-CONCEICAO DO CASTELO,violencia_social,32
-SANTA LEOPOLDINA,patrimonial,32
-VARGEM ALTA,violencia_social,32
-AGUIA BRANCA,patrimonial,31
-ICONHA,patrimonial,31
-PEDRO CANARIO,violencia_social,31
-SANTA MARIA DE JETIBA,objetos,31
-ALFREDO CHAVES,violencia_social,30
-BREJETUBA,patrimonial,30
-SAO JOSE DO CALCADO,violencia_social,30
-BREJETUBA,violencia_social,29
-MUNIZ FREIRE,violencia_social,29
-PINHEIROS,digital,29
-AGUA DOCE DO NORTE,violencia_social,28
-GUACUI,objetos,28
-IRUPI,violencia_social,28
-SAO DOMINGOS DO NORTE,patrimonial,27
-VILA VALERIO,violencia_social,27
-ANCHIETA,digital,26
-MARILANDIA,violencia_social,26
-ALTO RIO NOVO,patrimonial,25
-IBIRACU,violencia_social,25
-MUQUI,violencia_social,25
-SANTA LEOPOLDINA,violencia_social,25
-ANCHIETA,objetos,24
-BOM JESUS DO NORTE,violencia_social,24
-CASTELO,digital,24
-IBITIRAMA,patrimonial,24
-BAIXO GUANDU,objetos,23
-MANTENOPOLIS,violencia_social,23
-CASTELO,objetos,22
-FUNDAO,objetos,22
-ITARANA,patrimonial,22
-JAGUARE,objetos,22
-MONTANHA,objetos,22
-SAO ROQUE DO CANAA,patrimonial,22
-VILA PAVAO,patrimonial,22
-GOVERNADOR LINDENBERG,patrimonial,21
-ALEGRE,objetos,20
-ITARANA,violencia_social,20
-LARANJA DA TERRA,patrimonial,20
-SAO ROQUE DO CANAA,violencia_social,20
-BOM JESUS DO NORTE,patrimonial,19
-DORES DO RIO PRETO,patrimonial,19
-AGUIA BRANCA,violencia_social,18
-DORES DO RIO PRETO,violencia_social,18
-ICONHA,violencia_social,18
-JOAO NEIVA,objetos,18
-VENDA NOVA DO IMIGRANTE,objetos,18
-MIMOSO DO SUL,objetos,17
-CONCEICAO DA BARRA,digital,16
-GOVERNADOR LINDENBERG,violencia_social,16
-LARANJA DA TERRA,violencia_social,16
-MARILANDIA,objetos,16
+VILA VELHA,patrimonial,10288
+VITORIA,patrimonial,8897
+SERRA,patrimonial,8452
+CARIACICA,patrimonial,5961
+VILA VELHA,objetos,3988
+SERRA,objetos,3498
+CARIACICA,objetos,3229
+VITORIA,objetos,3132
+SERRA,violencia_social,2265
+CACHOEIRO DE ITAPEMIRIM,patrimonial,2076
+GUARAPARI,patrimonial,2026
+VILA VELHA,violencia_social,1954
+LINHARES,patrimonial,1607
+CARIACICA,violencia_social,1372
+COLATINA,patrimonial,1288
+VITORIA,violencia_social,1139
+CACHOEIRO DE ITAPEMIRIM,violencia_social,1070
+COLATINA,violencia_social,909
+ARACRUZ,patrimonial,853
+LINHARES,violencia_social,759
+VIANA,patrimonial,740
+ARACRUZ,violencia_social,694
+GUARAPARI,objetos,659
+LINHARES,objetos,628
+MARATAIZES,patrimonial,562
+SAO MATEUS,violencia_social,522
+NOVA VENECIA,patrimonial,452
+ITAPEMIRIM,patrimonial,429
+SERRA,digital,424
+SAO MATEUS,patrimonial,418
+GUARAPARI,violencia_social,402
+CASTELO,patrimonial,393
+BARRA DE SAO FRANCISCO,patrimonial,383
+CACHOEIRO DE ITAPEMIRIM,objetos,360
+NOVA VENECIA,violencia_social,314
+VITORIA,digital,314
+VIANA,violencia_social,310
+ARACRUZ,objetos,305
+MARATAIZES,violencia_social,303
+PIUMA,patrimonial,302
+BARRA DE SAO FRANCISCO,violencia_social,273
+ITAPEMIRIM,violencia_social,268
+BAIXO GUANDU,patrimonial,266
+ANCHIETA,patrimonial,244
+CONCEICAO DA BARRA,patrimonial,237
+IUNA,patrimonial,235
+SANTA MARIA DE JETIBA,violencia_social,229
+SAO GABRIEL DA PALHA,violencia_social,224
+COLATINA,digital,219
+VENDA NOVA DO IMIGRANTE,patrimonial,217
+COLATINA,objetos,204
+SAO MATEUS,objetos,203
+SAO GABRIEL DA PALHA,patrimonial,194
+CASTELO,violencia_social,190
+VIANA,objetos,187
+GUACUI,patrimonial,186
+SANTA MARIA DE JETIBA,patrimonial,183
+ALEGRE,patrimonial,181
+BAIXO GUANDU,violencia_social,180
+ALEGRE,violencia_social,178
+MARATAIZES,objetos,171
+CARIACICA,digital,163
+AFONSO CLAUDIO,violencia_social,161
+IBATIBA,patrimonial,161
+PIUMA,violencia_social,161
+ANCHIETA,violencia_social,159
+FUNDAO,patrimonial,158
+CONCEICAO DA BARRA,violencia_social,143
+IUNA,violencia_social,142
+SANTA TERESA,patrimonial,142
+GUACUI,violencia_social,133
+MIMOSO DO SUL,patrimonial,121
+AFONSO CLAUDIO,patrimonial,118
+VARGEM ALTA,patrimonial,118
+PINHEIROS,violencia_social,117
+MONTANHA,patrimonial,115
+PEDRO CANARIO,patrimonial,113
+IBATIBA,violencia_social,107
+PANCAS,patrimonial,107
+PINHEIROS,patrimonial,106
+SOORETAMA,patrimonial,105
+MARECHAL FLORIANO,patrimonial,100
+VENDA NOVA DO IMIGRANTE,violencia_social,100
+PRESIDENTE KENNEDY,violencia_social,98
+ITAPEMIRIM,objetos,96
+VILA VELHA,digital,95
+DOMINGOS MARTINS,patrimonial,94
+MUNIZ FREIRE,patrimonial,93
+BOA ESPERANCA,violencia_social,90
+JOAO NEIVA,patrimonial,89
+JAGUARE,patrimonial,88
+JERONIMO MONTEIRO,patrimonial,88
+JOAO NEIVA,violencia_social,88
+MARILANDIA,patrimonial,88
+SANTA TERESA,violencia_social,88
+VARGEM ALTA,violencia_social,84
+ALFREDO CHAVES,patrimonial,83
+CONCEICAO DA BARRA,objetos,83
+JAGUARE,violencia_social,83
+SOORETAMA,violencia_social,83
+MIMOSO DO SUL,violencia_social,81
+IBIRACU,patrimonial,80
+MONTANHA,violencia_social,80
+MUQUI,patrimonial,80
+FUNDAO,violencia_social,78
+JERONIMO MONTEIRO,violencia_social,77
+PANCAS,violencia_social,76
+ITAGUACU,patrimonial,74
+SAO JOSE DO CALCADO,patrimonial,74
+SAO JOSE DO CALCADO,violencia_social,73
+PIUMA,objetos,72
+ICONHA,patrimonial,71
+PRESIDENTE KENNEDY,patrimonial,69
+ATILIO VIVACQUA,patrimonial,68
+CONCEICAO DO CASTELO,violencia_social,67
+MARILANDIA,violencia_social,67
+MUNIZ FREIRE,violencia_social,67
+PEDRO CANARIO,violencia_social,67
+RIO BANANAL,violencia_social,67
+DOMINGOS MARTINS,violencia_social,65
+IBIRACU,violencia_social,65
+NOVA VENECIA,objetos,65
+BARRA DE SAO FRANCISCO,objetos,63
+ANCHIETA,digital,61
+CONCEICAO DO CASTELO,patrimonial,61
+RIO NOVO DO SUL,patrimonial,61
+CASTELO,digital,60
+ITAGUACU,violencia_social,60
+ECOPORANGA,violencia_social,59
+SAO GABRIEL DA PALHA,objetos,59
+RIO BANANAL,patrimonial,56
+BOM JESUS DO NORTE,violencia_social,54
+BREJETUBA,violencia_social,53
+SANTA LEOPOLDINA,patrimonial,53
+BOA ESPERANCA,patrimonial,52
+IRUPI,patrimonial,52
+SANTA MARIA DE JETIBA,objetos,52
+IRUPI,violencia_social,51
+ALFREDO CHAVES,violencia_social,50
+SOORETAMA,objetos,49
+VILA PAVAO,patrimonial,49
+ALTO RIO NOVO,patrimonial,48
+CASTELO,objetos,47
+MANTENOPOLIS,violencia_social,47
+MUQUI,violencia_social,47
+BREJETUBA,patrimonial,44
+MARECHAL FLORIANO,violencia_social,44
+SAO DOMINGOS DO NORTE,patrimonial,44
+ARACRUZ,digital,43
+SANTA LEOPOLDINA,violencia_social,43
+SAO ROQUE DO CANAA,patrimonial,43
+ANCHIETA,objetos,42
+MANTENOPOLIS,patrimonial,42
+ALTO RIO NOVO,violencia_social,41
+BOM JESUS DO NORTE,patrimonial,41
+BAIXO GUANDU,objetos,40
+ECOPORANGA,patrimonial,38
+FUNDAO,objetos,38
+RIO NOVO DO SUL,violencia_social,38
+AGUA DOCE DO NORTE,patrimonial,37
+MIMOSO DO SUL,objetos,37
+VILA VALERIO,patrimonial,37
+AGUA DOCE DO NORTE,violencia_social,36
+ALEGRE,objetos,35
+GOVERNADOR LINDENBERG,patrimonial,35
+GUACUI,objetos,35
+ITARANA,patrimonial,35
+ITARANA,violencia_social,35
+PINHEIROS,objetos,35
+MANTENOPOLIS,digital,34
+SAO ROQUE DO CANAA,violencia_social,34
+ICONHA,violencia_social,33
+SAO DOMINGOS DO NORTE,violencia_social,33
+VILA PAVAO,violencia_social,33
+IBATIBA,objetos,31
+DOMINGOS MARTINS,objetos,30
+IUNA,objetos,30
+VARGEM ALTA,objetos,30
+AGUIA BRANCA,violencia_social,29
+ATILIO VIVACQUA,violencia_social,29
+MONTANHA,objetos,29
+LARANJA DA TERRA,violencia_social,28
+CONCEICAO DA BARRA,digital,27
+IBITIRAMA,patrimonial,27
+DORES DO RIO PRETO,patrimonial,26
+PINHEIROS,digital,26
+GOVERNADOR LINDENBERG,violencia_social,25
+MUCURICI,violencia_social,25
+PONTO BELO,patrimonial,25
+VILA VALERIO,violencia_social,25
+APIACA,patrimonial,24
+DORES DO RIO PRETO,violencia_social,23
+JAGUARE,objetos,23
+PEDRO CANARIO,objetos,23
+SANTA TERESA,digital,23
+IBITIRAMA,violencia_social,21
+LARANJA DA TERRA,patrimonial,21
+PONTO BELO,violencia_social,21
+CACHOEIRO DE ITAPEMIRIM,digital,20
+MARILANDIA,objetos,20
+JOAO NEIVA,objetos,19
+BOA ESPERANCA,objetos,18
+BOM JESUS DO NORTE,objetos,18
+PANCAS,objetos,18
+AFONSO CLAUDIO,objetos,17
+APIACA,violencia_social,17
+GUARAPARI,digital,17
+RIO NOVO DO SUL,objetos,17
+VARGEM ALTA,digital,17
+ALFREDO CHAVES,digital,16
+MARECHAL FLORIANO,objetos,16
 MUCURICI,patrimonial,16
-RIO NOVO DO SUL,violencia_social,16
-APIACA,patrimonial,15
-MARECHAL FLORIANO,objetos,15
-PINHEIROS,objetos,15
-ALTO RIO NOVO,violencia_social,14
-DOMINGOS MARTINS,objetos,14
-IUNA,objetos,14
-PEDRO CANARIO,objetos,14
-MANTENOPOLIS,digital,13
-SAO DOMINGOS DO NORTE,violencia_social,13
-VILA PAVAO,violencia_social,13
-ALFREDO CHAVES,digital,12
-ATILIO VIVACQUA,violencia_social,12
-GUARAPARI,digital,12
-PONTO BELO,patrimonial,12
-AFONSO CLAUDIO,objetos,11
-SANTA TERESA,digital,11
-BOA ESPERANCA,objetos,10
-CACHOEIRO DE ITAPEMIRIM,digital,10
-IBATIBA,objetos,10
-PANCAS,objetos,10
-VIANA,digital,10
-APIACA,violencia_social,9
-DIVINO DE SAO LOURENCO,violencia_social,9
-IRUPI,objetos,9
-MUCURICI,violencia_social,9
-PONTO BELO,violencia_social,9
-VARGEM ALTA,digital,9
-BARRA DE SAO FRANCISCO,digital,8
-BOM JESUS DO NORTE,objetos,8
-IBITIRAMA,violencia_social,8
-RIO BANANAL,objetos,8
-SANTA LEOPOLDINA,objetos,8
-SAO DOMINGOS DO NORTE,objetos,8
-VARGEM ALTA,objetos,8
-VILA VALERIO,objetos,8
-AGUIA BRANCA,objetos,7
-ALFREDO CHAVES,objetos,7
-IBIRACU,objetos,7
-JERONIMO MONTEIRO,objetos,7
-RIO NOVO DO SUL,objetos,7
-ATILIO VIVACQUA,objetos,6
-ICONHA,digital,6
-MUQUI,objetos,6
-SANTA TERESA,objetos,6
-CONCEICAO DO CASTELO,objetos,5
-DIVINO DE SAO LOURENCO,patrimonial,5
-MANTENOPOLIS,objetos,5
-PRESIDENTE KENNEDY,objetos,5
-SANTA MARIA DE JETIBA,digital,5
-SAO JOSE DO CALCADO,objetos,5
-DORES DO RIO PRETO,objetos,4
-ICONHA,objetos,4
-ITAGUACU,objetos,4
+SANTA TERESA,objetos,16
+VENDA NOVA DO IMIGRANTE,objetos,16
+VIANA,digital,16
+MANTENOPOLIS,objetos,15
+ALFREDO CHAVES,objetos,14
+DIVINO DE SAO LOURENCO,violencia_social,14
+MUQUI,objetos,14
+AGUIA BRANCA,patrimonial,13
+ATILIO VIVACQUA,objetos,13
+IBIRACU,objetos,13
+ITAGUACU,objetos,13
+RIO BANANAL,objetos,13
+ICONHA,objetos,12
+JERONIMO MONTEIRO,objetos,12
+IRUPI,objetos,11
+SANTA LEOPOLDINA,objetos,11
+ICONHA,digital,10
+PRESIDENTE KENNEDY,objetos,10
+BARRA DE SAO FRANCISCO,digital,9
+DIVINO DE SAO LOURENCO,patrimonial,9
+MUNIZ FREIRE,objetos,9
+VILA VALERIO,objetos,9
+CONCEICAO DO CASTELO,objetos,7
+PANCAS,digital,7
+SANTA MARIA DE JETIBA,digital,7
+SAO DOMINGOS DO NORTE,objetos,7
+VILA PAVAO,objetos,7
+BREJETUBA,objetos,6
+ECOPORANGA,digital,6
+SAO JOSE DO CALCADO,objetos,6
+GOVERNADOR LINDENBERG,digital,5
+GOVERNADOR LINDENBERG,objetos,5
+SAO ROQUE DO CANAA,digital,5
+SAO ROQUE DO CANAA,objetos,5
+APIACA,objetos,4
 ITARANA,objetos,4
 PIUMA,digital,4
-SAO ROQUE DO CANAA,digital,4
-SAO ROQUE DO CANAA,objetos,4
-VENDA NOVA DO IMIGRANTE,digital,4
-VILA PAVAO,objetos,4
-AGUA DOCE DO NORTE,objetos,3
-APIACA,objetos,3
+PONTO BELO,objetos,4
 CONCEICAO DO CASTELO,digital,3
-GOVERNADOR LINDENBERG,digital,3
+IBITIRAMA,objetos,3
+LARANJA DA TERRA,objetos,3
+LINHARES,digital,3
+MUCURICI,objetos,3
+NOVA VENECIA,digital,3
+AFONSO CLAUDIO,digital,2
+AGUA DOCE DO NORTE,objetos,2
 AGUIA BRANCA,digital,2
-ALTO RIO NOVO,objetos,2
-BOA ESPERANÇA,violencia_social,2
-ECOPORANGA,digital,2
-GOVERNADOR LINDENBERG,objetos,2
-LARANJA DA TERRA,objetos,2
-LINHARES,digital,2
+AGUIA BRANCA,objetos,2
+FUNDAO,digital,2
 MONTANHA,digital,2
-MUCURICI,objetos,2
-MUNIZ FREIRE,objetos,2
-NOVA VENECIA,digital,2
-PANCAS,digital,2
-PEDRO CANARIO,digital,2
-AFONSO CLAUDIO,digital,1
-BAIXO GUANDU,digital,1
-BREJETUBA,objetos,1
-ECOPORANGA,objetos,1
-FUNDAO,digital,1
+VENDA NOVA DO IMIGRANTE,digital,2
+ALTO RIO NOVO,objetos,1
+DIVINO DE SAO LOURENCO,objetos,1
 GUACUI,digital,1
 IBIRACU,digital,1
-IBITIRAMA,objetos,1
-IRUPI,digital,1
+ITAPEMIRIM,digital,1
 MUCURICI,digital,1
-PONTO BELO,objetos,1
-PRESIDENTE KENNEDY,digital,1
+PEDRO CANARIO,digital,1
+PONTO BELO,digital,1
+RIO NOVO DO SUL,digital,1
 SAO GABRIEL DA PALHA,digital,1
+SAO MATEUS,digital,1
