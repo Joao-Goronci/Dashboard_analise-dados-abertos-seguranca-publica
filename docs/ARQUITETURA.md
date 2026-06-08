@@ -1,276 +1,98 @@
-# Arquitetura do Dashboard de Segurança Pública ES
+﻿# Arquitetura do Dashboard de Segurança Pública ES
 
-## 📋 Visão Geral
+## Visão geral
 
-Dashboard interativo e responsivo para análise de dados de segurança pública do Espírito Santo 2025. Arquitetura monorepo com backend FastAPI e frontend React/Vite.
+Este projeto usa uma arquitetura simples de monorepo com duas camadas:
+- Backend Python/FastAPI que expõe dados processados a partir de CSVs.
+- Frontend React/Vite que consome a API e apresenta visualizações.
 
-## 🏗️ Estrutura do Projeto
+O foco é permitir análise rápida e consulta de indicadores, não processamento em tempo real.
 
-```
-├── packages/
-│   ├── frontend/          # React + Vite + Recharts
-│   └── backend/           # FastAPI + Pandas
-├── docs/                  # Documentação
-├── package.json           # Root workspace
-└── NEXT_STEPS.md         # Roadmap
-```
+## Estrutura do repositório
 
-## 🔄 Fluxo de Dados
-
-```
-CSV Data Files
-    ↓
-Backend Processing (Pandas)
-    ↓
-FastAPI Endpoints
-    ↓
-Frontend API Client
-    ↓
-Data Transformations (normalizeKey, aggregations)
-    ↓
-React Components (HomePage, ViolenciaSocialPage, etc)
-    ↓
-Recharts Visualizations
-    ↓
-User Browser (Responsive Design)
+```text
+Dashboard_analise-dados-abertos-seguranca-publica/
+├── packages/frontend/     # Aplicação web React + Vite
+├── packages/backend/      # API FastAPI + pipeline de dados em CSV
+└── docs/                  # Documentação técnica
 ```
 
-## 🛠️ Backend (FastAPI)
+## Fluxo de dados
 
-### Estrutura
-- `src/main.py` - Aplicação FastAPI + CORS middleware
-- `src/routes/dashboard_routes.py` - Endpoints da API
-- `src/services/dashboard_data_service.py` - Carregamento e cache de dados
-- `src/config/data_paths.py` - Configuração de caminhos de arquivos
+1. Dados brutos em `packages/backend/src/data/raw/CSVs/`
+2. Pipeline Python em `packages/backend/src/data/preprocessing/load_data.py`
+3. Arquivos processados gerados em `packages/backend/src/data/processed/`
+4. Backend FastAPI lê esses CSVs e expõe JSON
+5. Frontend consome os endpoints e transforma os dados para gráficos
+6. Visualização é exibida no navegador
 
-### Endpoints Principais
+## Backend
 
-| Endpoint | Método | Descrição |
-|----------|--------|-----------|
-| `/api/dashboard` | GET | Bundle completo de dados |
-| `/api/kpis/home` | GET | KPIs da página inicial |
-| `/api/analytics/crimes-por-mes` | GET | Séries mensais |
-| `/api/analytics/crimes-por-municipio` | GET | Ranking de municípios |
-| `/api/analytics/crimes-por-periodo` | GET | Distribuição por período |
-| `/api/analytics/top-bairros` | GET | Top 10 bairros |
-| `/api/analytics/comparativo-furto-roubo` | GET | Furto vs Roubo |
-| `/api/analytics/objetos-mais-roubados` | GET | Objetos frequentes |
+### Componentes principais
 
-### Camada de Cache
-- `@lru_cache(maxsize=1)` em funções de dados
-- Dados carregados uma vez e reutilizados
-- Ideal para dados estáticos processados
+- `packages/backend/src/main.py`
+  - Inicializa o FastAPI e configura CORS.
 
-### Tratamento de Erros
-- `FileNotFoundError` → HTTP 503 com mensagem descritiva
-- CORS habilitado para desenvolvimento (allow_origins=['*'])
-- Validação automática FastAPI
+- `packages/backend/src/routes/dashboard_routes.py`
+  - Define endpoints sob `/api`.
 
-## 🎨 Frontend (React + Vite)
+- `packages/backend/src/services/dashboard_data_service.py`
+  - Lê arquivos processados e aplica cache.
 
-### Estrutura
+- `packages/backend/src/config/data_paths.py`
+  - Mapeia nomes de arquivos processados para uso no serviço.
 
-```
-src/
-├── pages/
-│   ├── HomePage.jsx          # Visão geral consolidada
-│   ├── ViolenciaSocialPage.jsx
-│   ├── PatrimonialPage.jsx
-│   ├── DigitalPage.jsx
-│   └── ObjetosPage.jsx
-├── components/dashboard/
-│   ├── KpiCard.jsx          # Card de métrica
-│   ├── ChartCard.jsx        # Wrapper para gráficos
-│   └── SectionTitle.jsx     # Títulos de seção
-├── utils/
-│   └── dashboardTransforms.js  # Transformações de dados
-├── App.jsx                  # Router principal
-└── styles
-    ├── App.css             # Estilos gerais
-    └── Dashboard.css       # Estilos do dashboard
-```
+### Observações
 
-### Componentes
+- O backend não usa banco de dados; cada rota retorna dados de um CSV processado.
+- Adicionar nova fonte de dados exige adicionar arquivo em `processed/` e expor um endpoint.
+- O serviço usa `@lru_cache(maxsize=1)` para evitar leituras repetidas.
 
-#### KpiCard
-Exibe métrica com label, valor e nota.
-```jsx
-<KpiCard
-  label="Total de Ocorrências"
-  value="45.230"
-  note="Base consolidada do período"
-/>
-```
+## Frontend
 
-#### ChartCard
-Wrapper responsivo para gráficos Recharts.
-```jsx
-<ChartCard title="Evolução mensal" subtitle="Dados históricos">
-  <ResponsiveContainer width="100%" height={320}>
-    <LineChart data={data}>
-      {/* chart content */}
-    </LineChart>
-  </ResponsiveContainer>
-</ChartCard>
-```
+### Componentes principais
 
-### Transformações de Dados
+- `packages/frontend/src/App.jsx`
+  - Define a navegação e as rotas cliente.
 
-Funções em `dashboardTransforms.js`:
+- `packages/frontend/src/pages/`
+  - Contém páginas como `HomePage.jsx`, `ViolenciaSocialPage.jsx`, `PatrimonialPage.jsx`, `DigitalPage.jsx` e `ObjetosPage.jsx`.
 
-| Função | Entrada | Saída | Uso |
-|--------|---------|-------|-----|
-| `normalizeKey` | string | UPPERCASE sem acentos | Comparações |
-| `aggregateCategoryMonthlySeries` | raw data | séries por mês/categoria | LineChart |
-| `aggregateMunicipalitySeries` | raw data | top N municípios | BarChart |
-| `aggregateTopNeighborhoods` | raw data | top N bairros | BarChart |
-| `aggregatePeriodSeries` | raw data | distribuição períodos | StackedBar |
-| `formatCompactNumber` | number | "1.234" (pt-BR) | Exibição |
+- `packages/frontend/src/components/dashboard/`
+  - Componentes reutilizáveis como `KpiCard.jsx`, `ChartCard.jsx` e `SectionTitle.jsx`.
 
-### Páginas
+- `packages/frontend/src/utils/dashboardTransforms.js`
+  - Converte dados da API em séries e categorias de gráfico.
 
-1. **HomePage**
-   - KPIs: total, cidade crítica, horário crítico, crime dominante
-   - Gráficos: evolução mensal, crimes por município, distribuição por período, top bairros
+### Onde ajustar análises
 
-2. **ViolenciaSocialPage**
-   - Filtrado para categoria "violencia_social"
-   - Mesmos gráficos base
+- Agregação e filtros do cliente: `dashboardTransforms.js`
+- Layout e estrutura dos dashboards: `src/pages/`
+- Estilos e responsividade: `src/App.css` e `src/styles/`
 
-3. **PatrimonialPage**
-   - Filtrado para categoria "patrimonial"
-   - Adiciona comparativo furto vs roubo
+## Pontos de integração importantes
 
-4. **DigitalPage**
-   - Filtrado para crimes digitais
-   - Dados específicos de evolução
+- `packages/backend/src/data/processed/` é a fonte de verdade dos dados do dashboard.
+- Se um novo gráfico precisar de dados diferentes, verifique primeiro se o CSV processado existe.
+- A API atual não suporta query strings para filtros; a maior parte da lógica de categoria e limite ocorre no frontend.
 
-5. **ObjetosPage**
-   - Foco em objetos roubados/furtados
-   - Comparativo de quantidades
+## Recomendações para o time de consulta
 
-## 📊 Gráficos Utilizados
+- Comece por `packages/backend/src/data/preprocessing/load_data.py` para entender como os dados são limpos.
+- Use `packages/backend/src/routes/dashboard_routes.py` para encontrar endpoints disponíveis.
+- Use `packages/frontend/src/utils/dashboardTransforms.js` para seguir como os dados são transformados em visualizações.
+- Para alterações rápidas, adicione um novo arquivo em `processed/` e exponha pelo backend.
 
-Todos utilizam `ResponsiveContainer` do Recharts para adaptação a diferentes tamanhos.
+## Responsabilidades de cada camada
 
-### LineChart
-- Evolução mensal com múltiplas linhas (categorias)
-- Com pontos de dados e legenda
-- Altura responsiva: 150px (mobile) → 320px (desktop)
+| Camada | Responsabilidade |
+|---|---|
+| Backend | Expor dados processados a partir de CSVs |
+| Pipeline | Limpar, padronizar e gerar artefatos em CSV |
+| Frontend | Consumir API, agregar dados e exibir gráficos |
 
-### BarChart
-- Horizontal: Municípios, bairros (altura do grid adapta)
-- Vertical: Períodos do dia, objetos
-- Stacked: Distribuição de categorias por período
+## Onde começar quando for consultar o sistema
 
-### Componentes Recharts
-- `ResponsiveContainer` - Adaptação automática
-- `CartesianGrid` - Grade visual
-- `XAxis/YAxis` - Eixos com labels responsivos
-- `Tooltip` - Hover com formatação
-- `Legend` - Legenda das séries
-- `Bar/Line/Pie` - Tipos de visualização
-
-## 🎨 Design e Responsividade
-
-### Breakpoints CSS
-- **Mobile**: < 640px
-  - 1 coluna (KPIs, gráficos)
-  - Padding: 10px
-  - Font: reduzidas
-  
-- **Tablet**: 640px - 1024px
-  - 2 colunas (KPIs, alguns gráficos)
-  - Padding: 14px
-  - Font: intermediárias
-  
-- **Desktop**: ≥ 1024px
-  - 4 colunas (KPIs)
-  - Grid charts: 1.4fr 1fr ou 1fr 1fr
-  - Padding: 18px
-  - Font: normais
-
-### Grid Layouts
-
-```css
-/* Mobile */
-.kpi-grid { grid-template-columns: 1fr; }
-.chart-grid-primary { grid-template-columns: 1fr; }
-
-/* Tablet (640px+) */
-.kpi-grid { grid-template-columns: repeat(2, 1fr); }
-.chart-grid-primary { grid-template-columns: 1fr; }
-
-/* Desktop (1024px+) */
-.kpi-grid { grid-template-columns: repeat(4, 1fr); }
-.chart-grid-primary { grid-template-columns: 1.4fr 1fr; }
-```
-
-### Estilos Principais
-
-#### App.css
-- `.app-container` - Padding responsivo
-- `.app-header` - Navegação principal
-- `.app-nav-button` - Botões de navegação (flex-wrap)
-
-#### Dashboard.css
-- `.dashboard-shell` - Container principal
-- `.kpi-grid` / `.chart-grid` - Grids responsivos
-- `.chart-card` - Cards com gráficos
-- Media queries: 640px, 768px, 1024px
-
-## 🔐 Segurança
-
-- ✅ CORS configurado (desenvolvimento)
-- ✅ Input validation FastAPI
-- ✅ Sem dados sensíveis em resposta
-- ✅ CSV files em diretório processado (não raw)
-
-## ⚡ Performance
-
-### Backend
-- LRU Cache (1 slot) em todas as funções
-- Carregamento único de CSV via pandas
-- Lazy loading de dados
-
-### Frontend
-- Code splitting automático (Vite)
-- Memoização em `useMemo` para transformações
-- ResponsiveContainer otimizado
-
-## 📱 Testado Em
-
-- ✅ Desktop (1920x1080, 1366x768)
-- ✅ Tablet (768x1024, 834x1194)
-- ✅ Mobile (375x667, 414x896)
-
-## 🚀 Deployment
-
-### Backend
-```bash
-cd packages/backend
-pip install -r requirements.txt
-uvicorn src.main:app --host 0.0.0.0 --port 8000
-```
-
-### Frontend
-```bash
-cd packages/frontend
-npm install
-npm run build
-npm run dev
-```
-
-## 📝 Próximos Passos
-
-1. ✅ Responsividade e acabamento visual
-2. ✅ Validação de dados e gráficos
-3. Refatoração de nomes e padronizações
-4. Documentação arquitetural (atual)
-
-## 📚 Referências
-
-- Recharts: https://recharts.org/
-- FastAPI: https://fastapi.tiangolo.com/
-- React: https://react.dev/
-- Vite: https://vitejs.dev/
+- Se o problema for dado incorreto: revise o pipeline em `load_data.py`.
+- Se o problema for endpoint faltando: veja `dashboard_routes.py`.
+- Se o problema for gráfico errado: veja `dashboardTransforms.js` e a página correspondente.

@@ -1,13 +1,13 @@
-# Setup - Guia de Configuração
+﻿# Setup - Guia de Configuração
 
 ## Requisitos
 
-- Node.js: 18+ (LTS recomendado) — para o frontend
-- npm: 9+ ou pnpm: 8+
-- Python: 3.10+ — para o backend (FastAPI / uvicorn)
-- Git: Para clonar o repositório
+- Node.js 18+ (LTS recomendado)
+- npm 9+
+- Python 3.10+
+- Git
 
-### Verificar Versões
+### Verificar versões
 
 ```bash
 node --version
@@ -28,168 +28,109 @@ cd Dashboard_analise-dados-abertos-seguranca-publica
 
 ### 2. Instale as dependências
 
-Frontend (Node):
-
 ```bash
 npm install
 ```
 
-Backend (Python):
+### 3. Configure o backend
 
 ```bash
+cd packages/backend
 python -m venv .venv
 # Windows
 .\.venv\Scripts\activate
 # macOS / Linux
 # source .venv/bin/activate
-
-pip install -r packages/backend/requirements.txt
+pip install -r requirements.txt
+copy .env.example .env.local
 ```
 
-Alternativa com pnpm (frontend):
+### 4. Configure o frontend
 
 ```bash
-pnpm install
+cd ../../packages/frontend
+npm install
 ```
+
+> O frontend não depende de `.env.example` no repositório, mas usa `http://localhost:3001/api` como base padrão.
 
 ---
 
-## Configuração de Ambiente
+## Executar localmente
+
+### Backend
+
+```bash
+cd packages/backend
+npm run dev
+```
+
+ou
+
+```bash
+python -m uvicorn src.main:app --reload --host 0.0.0.0 --port 3001
+```
 
 ### Frontend
 
 ```bash
 cd packages/frontend
-copy .env.example .env.local    # Windows
-# or
-cp .env.example .env.local      # macOS / Linux
+npm run dev
 ```
 
-Valores típicos em `.env.local`:
+### Backend + Frontend
 
-```env
-VITE_API_BASE_URL=http://localhost:3001/api
-VITE_APP_NAME=Dashboard - Segurança Pública ES
-VITE_ENVIRONMENT=development
-```
+Abra dois terminais e execute:
 
-### Backend (Python / FastAPI)
-
-```bash
-cd packages/backend
-copy .env.example .env.local    # Windows
-# or
-cp .env.example .env.local      # macOS / Linux
-```
-
-Valores típicos em `.env.local`:
-
-```env
-PORT=3001
-CORS_ORIGIN=http://localhost:5173
-DATA_PATH=./src/data
-LOG_LEVEL=info
-```
+- `npm run dev:backend`
+- `npm run dev:frontend`
 
 ---
 
-## Iniciar o servidor de desenvolvimento
+## Scripts úteis no workspace
 
-Opções para desenvolvimento local:
+| Comando | Descrição |
+|---|---|
+| `npm run dev` | Inicia o frontend |
+| `npm run dev:frontend` | Inicia o frontend |
+| `npm run dev:backend` | Inicia o backend |
+| `npm run build` | Build do frontend via workspaces |
+| `npm run build:frontend` | Build do frontend |
 
-- Frontend apenas:
-
-```bash
-npm run dev:frontend
-```
-
-Acesse: http://localhost:5173
-
-- Backend apenas:
-
-```bash
-npm run dev:backend
-```
-
-API: http://localhost:3001/api
-
-- Frontend + Backend (duas janelas):
-
-Abra dois terminais e rode os comandos acima separadamente.
-
-- Frontend + Backend (um comando, usando `concurrently`):
-
-```bash
-npx concurrently "npm:dev:frontend" "npm:dev:backend"
-```
-
-> Observação: o repositório contém `concurrently` como devDependency na raiz; use `npx` se não quiser instalar globalmente.
+> O backend é uma aplicação Python, por isso não há build JavaScript para ele.
 
 ---
 
 ## Verificação
 
-- Health check do backend:
+- Health check:
 
 ```bash
 curl http://localhost:3001/api/health
 ```
 
-Resposta esperada (exemplo):
+Resposta esperada:
 
 ```json
 { "status": "ok" }
 ```
 
-- Abra o frontend e verifique chamadas a `/api/*` nas DevTools do navegador.
-
----
-
-## Build para produção
-
 - Frontend:
 
-```bash
-npm run build:frontend
-```
-
-Arquivos de build: `packages/frontend/dist/`
-
-- Backend:
-
-O backend é uma aplicação Python; não há build JavaScript — para produção execute com um ASGI server (uvicorn/gunicorn) apontando para `src.main:app`.
-
----
-
-## Scripts úteis (raiz)
-
-```bash
-npm run dev              # Inicia frontend (Vite)
-npm run dev:frontend    # Inicia apenas frontend
-npm run dev:backend     # Inicia apenas backend (uvicorn)
-npm run build           # Build de ambos (frontend)
-npm run build:frontend  # Build do frontend
-npm run build:backend   # Build do backend (placeholder)
-```
+Abra `http://localhost:5173` no navegador.
 
 ---
 
 ## Troubleshooting
 
-- Porta em uso: verifique processos e mate o PID ou altere `PORT` em `.env.local`.
-
-- Backend não inicia: ative o ambiente virtual e instale `requirements.txt`.
-
-- Frontend não conecta ao backend: confirme `VITE_API_BASE_URL` e `CORS_ORIGIN`.
-
-- Windows: use caminhos e comandos conforme exemplos (copy / .\\.venv\\Scripts\\activate).
+- Porta em uso: verifique processos nas portas `3001` ou `5173`.
+- Backend não inicia: ative o ambiente virtual e confirme a instalação dos requisitos.
+- Frontend não conecta: valide a API e o CORS na configuração do backend.
+- Arquivo CSV ausente: verifique `packages/backend/src/data/processed/`.
 
 ---
 
-## Próximos passos
+## Observações para consulta
 
-1. Ajustar `.env.local` conforme ambiente
-2. Rodar frontend e backend e validar endpoints
-3. Consultar `docs/API.md` para lista de endpoints disponíveis
-
----
+- O backend não faz filtros dinâmicos por query string; ele serve arquivos processados.
+- Se for preciso ajustar dados, revise `packages/backend/src/data/preprocessing/load_data.py`.

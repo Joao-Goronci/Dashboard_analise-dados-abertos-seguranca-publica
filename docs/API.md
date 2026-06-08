@@ -2,7 +2,7 @@
 
 ## Base URL
 
-```
+```text
 http://localhost:3001/api
 ```
 
@@ -10,82 +10,98 @@ http://localhost:3001/api
 
 ## Endpoints principais
 
-- GET `/api/health`
-  - Health check básico. Retorna `{ "status": "ok" }`.
+- `GET /api/health`
+  - Retorna `{ "status": "ok" }`.
 
-- GET `/api/dashboard`
-  - Bundle com dados principais do dashboard (KPIs, charts e resumos).
+- `GET /api/dashboard`
+  - Bundle completo com os principais dados do dashboard.
+  - Retorna um objeto com chaves como `kpisHome`, `crimesPorMes`, `crimesPorMunicipio`, `perfilVitimas`, etc.
 
-- GET `/api/kpis/home`
-  - KPIs para a página inicial do dashboard.
+- `GET /api/kpis/home`
+  - Retorna o primeiro registro de `kpis_home.csv`.
 
-- GET `/api/analytics/crimes-por-mes`
-  - Série temporal de crimes por mês.
+- `GET /api/analytics/crimes-por-mes`
+  - Retorna a série mensal de crimes em `crimes_por_mes.csv`.
 
-- GET `/api/analytics/crimes-por-municipio`
-  - Distribuição de crimes por município.
+- `GET /api/analytics/crimes-por-municipio`
+  - Retorna ranking de municípios em `crimes_por_municipio.csv`.
 
-- GET `/api/analytics/crimes-por-periodo`
-  - Dados agregados por período (ex.: semestre/ano).
+- `GET /api/analytics/crimes-por-periodo`
+  - Retorna dados agregados por período do dia em `crimes_por_periodo.csv`.
 
-- GET `/api/analytics/top-bairros`
-  - Lista de bairros com maior incidência.
+- `GET /api/analytics/top-bairros`
+  - Retorna top de bairros em `top_bairros.csv`.
 
-- GET `/api/analytics/comparativo-furto-roubo`
-  - Comparativo entre furtos e roubos (por período/região).
+- `GET /api/analytics/comparativo-furto-roubo`
+  - Retorna comparativo de furtos e roubos em `comparativo_furto_roubo.csv`.
 
-- GET `/api/analytics/objetos-mais-roubados`
-  - Lista de objetos mais roubados/furtados.
+- `GET /api/analytics/objetos-mais-roubados`
+  - Retorna objetos mais roubados/furtados em `objetos_mais_roubados.csv`.
 
-- GET `/api/analytics/perfil-vitimas`
-  - Perfil das vítimas (quando disponível nos dados).
+- `GET /api/analytics/perfil-vitimas`
+  - Retorna perfil de vítimas em `perfil_vitimas.csv`.
 
-- GET `/api/analytics/crimes-digitais-evolucao`
-  - Evolução de crimes digitais ao longo do tempo.
+- `GET /api/analytics/crimes-digitais-evolucao`
+  - Retorna evolução de crimes digitais em `crimes_digitais_evolucao.csv`.
 
-- GET `/api/datasets/fact-ocorrencias`
-  - Retorna o dataset de ocorrências (CSV carregado/transformado) em JSON.
+- `GET /api/datasets/fact-ocorrencias`
+  - Retorna o dataset processado completo de ocorrências em `fact_ocorrencias.csv`.
 
 ---
 
 ## Exemplos com cURL
 
 ```bash
-# Health
 curl http://localhost:3001/api/health
-
-# Dashboard bundle
 curl http://localhost:3001/api/dashboard
-
-# KPIs home
 curl http://localhost:3001/api/kpis/home
-
-# Crimes por mês
 curl http://localhost:3001/api/analytics/crimes-por-mes
-
-# Dataset de ocorrências
 curl http://localhost:3001/api/datasets/fact-ocorrencias
 ```
 
 ---
 
-## Notas
+## Exemplo de resposta básica
 
-- O backend expõe um prefixo `/api` (via `APIRouter`).
-- Os dados são carregados a partir de CSVs em `packages/backend/src/data/` e processados em memória (veja `services/dashboard_data_service.py`).
-- Se precisar de endpoints adicionais (ex.: filtros por período/região), consulte e estenda `packages/backend/src/routes/dashboard_routes.py` e os services correspondentes.
+`GET /api/dashboard` retorna um objeto com estrutura semelhante a:
+
+```json
+{
+  "kpisHome": { "total_crimes_valid": 87710, "percentual_crimes_validos": 81.67, ... },
+  "crimesPorMes": [ { "mes": "2025-01", "quantidade": 1234 }, ... ],
+  "crimesPorMunicipio": [ { "municipio": "VITORIA", "quantidade": 345 }, ... ],
+  "perfilVitimas": [ { "sexo": "FEMININO", "quantidade": 15464 }, ... ]
+}
+```
 
 ---
 
-## Erros e códigos HTTP
+## Observações para o time de consulta
 
-- `200 OK` — Sucesso
-- `400 Bad Request` — Requisição inválida
-- `404 Not Found` — Recurso não encontrado
-- `500 Internal Server Error` — Erro do servidor
+- As respostas são carregadas diretamente de CSVs processados.
+- Não há lógica de filtro avançado no backend; novos filtros exigem alteração em `packages/backend/src/routes/dashboard_routes.py`.
+- Para entender o esquema exato de cada endpoint, abra o CSV correspondente em `packages/backend/src/data/processed/`.
+
+---
+
+## Onde encontrar o código
+
+- Rotas: `packages/backend/src/routes/dashboard_routes.py`
+- Serviço de dados: `packages/backend/src/services/dashboard_data_service.py`
+- Mapeamento de arquivos: `packages/backend/src/config/data_paths.py`
+- Arquivos processados: `packages/backend/src/data/processed/`
+
+---
+
+## Códigos HTTP esperados
+
+- `200 OK` — sucesso
+- `400 Bad Request` — requisição inválida
+- `404 Not Found` — recurso não encontrado
+- `500 Internal Server Error` — erro interno
 
 Formato de erro comum:
 
 ```json
-{ "error": "Descrição do erro" }
+{ "detail": "Descrição do erro" }
 ```

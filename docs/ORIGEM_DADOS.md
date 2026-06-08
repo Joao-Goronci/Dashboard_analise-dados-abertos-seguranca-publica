@@ -1,12 +1,21 @@
 # Origem dos Dados e Auditoria de Qualidade
 
-## 1. Origem dos arquivos brutos
+Este documento fornece um guia para equipes que precisam compreender a origem dos dados, as decisões de limpeza e as limitações do dashboard.
 
-Os dados originais foram carregados a partir de arquivos CSV em:
+## 1. Objetivo
+
+- Documentar as fontes de dados originais.
+- Explicar o pipeline de transformação.
+- Listar problemas de qualidade e correções aplicadas.
+- Ajudar na interpretação dos indicadores gerados.
+
+## 2. Fonte dos dados brutos
+
+Os dados originais são arquivos CSV em:
 
 - `packages/backend/src/data/raw/CSVs/`
 
-Os arquivos utilizados no pipeline são:
+Arquivos utilizados:
 
 - `CRIMES_INFORMATICOS_2025.csv`
 - `ESTELIONATOS_2025.csv`
@@ -16,26 +25,28 @@ Os arquivos utilizados no pipeline são:
 - `ROUBOS_2025.csv`
 - `VIOLENCIA_DOMESTICA_2025.csv`
 
-Esses CSVs mantêm os dados brutos de ocorrências e servem como base para toda a transformação do dashboard.
+Esses arquivos representam a base bruta das ocorrências antes de qualquer limpeza.
 
-## 2. Pipeline de processamento
+## 3. Pipeline de processamento
 
-O script principal de ETL é:
+Arquivo principal:
 
 - `packages/backend/src/data/preprocessing/load_data.py`
 
-Ele realiza as seguintes etapas:
+Etapas principais do pipeline:
 
-1. leitura com fallback de codificação (`utf-8`, `utf-8-sig`, `latin1`, `cp1252`);
-2. renomeação das colunas com base em alias comuns;
-3. remoção de colunas irrelevantes (`_id`, `numero_ocorrencia`, `logradouro`);
-4. normalização de texto e padronização de valores;
-5. criação de colunas derivadas para data, hora, período do dia, faixa etária e categoria macro;
-6. geração da `fact_ocorrencias.csv` e de tabelas agregadas para o dashboard.
+1. Leitura de CSV com suporte a múltiplas codificações (`utf-8`, `utf-8-sig`, `latin1`, `cp1252`).
+2. Renomeação e unificação de colunas por alias.
+3. Remoção de campos não utilizados para análise.
+4. Normalização de valores textuais e padronização de categorias.
+5. Criação de colunas derivadas como data, hora, período do dia, faixa etária e categoria macro.
+6. Geração de arquivos processados em `packages/backend/src/data/processed/`.
 
-## 3. Problemas de qualidade identificados
+## 4. Problemas de qualidade detectados
 
-- `VIOLENCIA_DOMESTICA_2025.csv` contém 13.816 registros com campos principais totalmente ausentes:
+### Registros incompletos
+
+- `VIOLENCIA_DOMESTICA_2025.csv` possui 13.816 registros com campos essenciais ausentes:
   - `DATA DO FATO`
   - `HORA DO FATO`
   - `MUNICÍPIO`
@@ -44,63 +55,65 @@ Ele realiza as seguintes etapas:
   - `SEXO`
   - `IDADE`
 
-- Os arquivos de outros datasets apresentam altos percentuais de `BAIRRO` genérico:
-  - `CRIMES_INFORMATICOS`: 14,27% de bairros inválidos
-  - `ESTELIONATOS`: 14,14% de bairros inválidos
-  - `FURTOS`: 4,34% de bairros inválidos
-  - `HOMICIDIOS_DOLOSOS`: 6,3% de bairros inválidos
-  - `OBJETOS_FURTADOS_E_ROUBADOS`: 3,25% de bairros inválidos
-  - `ROUBOS`: 2,11% de bairros inválidos
-  - `VIOLENCIA_DOMESTICA`: 3,92% de bairros inválidos
+### Localidade inconsistente
 
-- Categorias genéricas recorrentes encontradas:
-  - `OUTRO LOCAL`
-  - `ZONA RURAL`
-  - `BAIRRO_NAO_INFORMADO`
-  - `MUNICIPIO_NAO_INFORMADO`
-  - `UF_NAO_INFORMADA`
-  - `IGNORADO`
-  - `DESCONHECIDO`
-  - `SEM INFORMACAO`
-  - `INDETERMINADA`
-  - `S I` / `S/I`
+Percentual de bairros inválidos por arquivo:
 
-## 4. Correções aplicadas no pipeline
+- `CRIMES_INFORMATICOS`: 14,27%
+- `ESTELIONATOS`: 14,14%
+- `FURTOS`: 4,34%
+- `HOMICIDIOS_DOLOSOS`: 6,3%
+- `OBJETOS_FURTADOS_E_ROUBADOS`: 3,25%
+- `ROUBOS`: 2,11%
+- `VIOLENCIA_DOMESTICA`: 3,92%
 
-- remoção de linhas completamente vazias antes da limpeza;
-- tratamento de valores genéricos e padronização de categorias inválidas;
-- criação de validações específicas para registros analíticos válidos:
-  - localidade válida (`municipio` e `bairro` confiáveis);
-  - data e hora válidas;
-  - tipo de ocorrência válido;
-  - perfil da vítima válido;
-  - objetos válidos.
-- os indicadores estratégicos agora usam apenas registros confiáveis:
-  - municípios críticos, bairros críticos e tendências não podem ser influenciados por valores genéricos;
-  - registros genéricos permanecem apenas em métricas de qualidade.
+### Categorias genéricas e ruído
 
-## 5. Resultados após a limpeza
+Valores recorrentes que exigiram tratamento:
 
-Após a execução do pipeline atualizado, a fact table passou de `121.215` para `107.399` registros.
+- `OUTRO LOCAL`
+- `ZONA RURAL`
+- `BAIRRO_NAO_INFORMADO`
+- `MUNICIPIO_NAO_INFORMADO`
+- `UF_NAO_INFORMADA`
+- `IGNORADO`
+- `DESCONHECIDO`
+- `SEM INFORMACAO`
+- `INDETERMINADA`
+- `S I` / `S/I`
+
+## 5. Correções aplicadas
+
+O pipeline foi ajustado para:
+
+- remover linhas vazias antes da limpeza;
+- padronizar e agrupar valores genéricos;
+- validar registros com localidade, data e hora confiáveis;
+- preservar perfis de vítimas válidos;
+- manter objetos válidos apenas quando houver dados significativos.
+
+Critérios de validade do pipeline:
+
+- `municipio` confiável
+- `bairro` confiável
+- `data_fato` e `hora_fato` válidos
+- `tipo_incidente` reconhecido
+- `sexo` e `idade` válidos quando presentes
+
+## 6. Resultados da limpeza
+
+Após o processamento, o arquivo `fact_ocorrencias.csv` contém cerca de `107.399` registros.
+
+Dos dados processados:
 
 - `total_crimes_valid`: `87.710`
 - `percentual_crimes_validos`: `81,67%`
 
-Os dashboards agora refletem apenas dados com:
+Esses números mostram que o dashboard trabalha com a maior parte dos dados, caso em que 18% foram excluídos ou marcados como não confiáveis.
 
-- município válido;
-- bairro válido;
-- data verificável;
-- horário válido;
-- tipo de ocorrência confiável.
+## 7. Artefatos processados
 
-## 6. Arquivos de saída gerados
-
-Os arquivos processados estão em:
-
-- `packages/backend/src/data/processed/`
-
-Os principais artefatos são:
+Arquivos gerados em `packages/backend/src/data/processed/`:
 
 - `fact_ocorrencias.csv`
 - `kpis_home.csv`
@@ -113,9 +126,20 @@ Os principais artefatos são:
 - `perfil_vitimas.csv`
 - `qualidade_dados_localidade.csv`
 
-## 7. Impacto na confiabilidade do dashboard
+## 8. Limitações e alertas
 
-- existe uma limitação importante em `VIOLENCIA_DOMESTICA` devido a 40,17% de registros sem data/hora na origem;
-- mesmo após a limpeza, 8,57% dos registros faturados ainda não possuem bairro válido para análise de bairro crítico.
+- `VIOLENCIA_DOMESTICA` tem limitação significativa devido à falta de data/hora em muitos registros.
+- Métricas de bairro e município podem ser afetadas por registros genéricos ou de baixa qualidade.
+- A interpretação dos KPIs deve considerar que apenas dados confiáveis foram usados nas análises principais.
 
-Essas limitações devem ser consideradas ao interpretar rankings e KPIs, especialmente quando se trata de decisões de gestão pública.
+## 9. Como usar este documento
+
+- Consulte antes de extrair conclusões ou gerar relatórios.
+- Use os arquivos processados como referência para os números exibidos.
+- Valide qualquer novo indicador com o pipeline de ETL em `load_data.py`.
+
+## 10. Recomendações para consultas futuras
+
+- Registre qualquer alteração no pipeline ou nas regras de exclusão.
+- Evite usar diretamente registros brutos sem passar pelo processo de limpeza.
+- Se precisar de um novo filtro ou dimensão, primeiro verifique se o dado existe nos CSVs brutos e se ele permanece válido após a transformação.
