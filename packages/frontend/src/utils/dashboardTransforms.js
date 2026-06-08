@@ -162,7 +162,10 @@ export function aggregatePeriodSeries(rows) {
   })
 
   rows.forEach((row) => {
-    const period = normalizeKey(row.periodo_dia)
+    let period = normalizeKey(row.periodo_dia)
+    if (period === 'SEM HORARIO') {
+      period = 'SEM_HORARIO_INFORMADO'
+    }
     if (!grouped.has(period)) return
 
     const current = grouped.get(period)
@@ -175,7 +178,7 @@ export function aggregatePeriodSeries(rows) {
     }
   })
 
-  return PERIOD_ORDER.map((period) => grouped.get(period))
+  return PERIOD_ORDER.map((period) => grouped.get(period)).filter((entry) => entry.total > 0)
 }
 
 export function aggregateComparisonSeries(rows) {
