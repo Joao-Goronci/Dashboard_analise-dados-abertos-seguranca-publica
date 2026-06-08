@@ -25,7 +25,7 @@ function ObjetosPage({ data }) {
         <SectionTitle
           eyebrow="Objetos"
           title="Objetos mais furtados e roubados"
-          description="Página dedicada aos bens mais subtraídos, com comparação furtado x roubado e volume total por item."
+          description="Bens mais subtraídos, com comparação furtado x roubado e volume total por item."
         />
         <div className="dashboard-hero-meta">
           <span>Base: objetos furtados e roubados</span>

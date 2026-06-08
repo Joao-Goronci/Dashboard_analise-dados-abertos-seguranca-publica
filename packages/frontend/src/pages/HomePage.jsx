@@ -67,11 +67,10 @@ function HomePage({ data, onMunicipioClick }) {
         <SectionTitle
           eyebrow="Home"
           title="Dashboard analítico de segurança pública"
-          description="A visão geral agora é interativa, consolidada e organizada para leitura executiva do cenário do ES em 2025."
+          description="Visão geral dos dados, consolidada e organizada para leitura executiva do cenário do ES em 2025."
         />
         <div className="dashboard-hero-meta">
           <span>Fonte: dados públicos processados</span>
-          <span>Recorte: jan-out/2025</span>
         </div>
       </section>
 
@@ -85,7 +84,7 @@ function HomePage({ data, onMunicipioClick }) {
         <ChartCard
           ref={chartRef}
           title="Evolução mensal das ocorrências"
-          subtitle="Todos os meses aparecem em ordem cronológica"
+          subtitle="Meses aparecem em ordem cronológica"
           exportData={monthlySeries}
           fileName="evolucao_mensal"
         >
@@ -104,7 +103,7 @@ function HomePage({ data, onMunicipioClick }) {
           </ResponsiveContainer>
         </ChartCard>
 
-        <ChartCard title="Crimes por município" subtitle="Ranking consolidado por município. Clique em uma barra para filtrar.">
+        <ChartCard title="Crimes por município" subtitle="Ranking consolidado por município.">
           <ResponsiveContainer width="100%" height={320}>
             <BarChart data={municipalitySeries} layout="vertical" margin={{ top: 10, right: 20, left: 30, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
