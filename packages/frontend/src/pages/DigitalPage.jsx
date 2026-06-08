@@ -30,7 +30,7 @@ function DigitalPage({ data }) {
         <SectionTitle
           eyebrow="Digital"
           title="Crimes digitais e sua evolução"
-          description="Acompanhe o comportamento das ocorrências digitais por mês e município, com leitura rápida dos pontos críticos."
+          description="Comportamento das ocorrências digitais por mês e município, com leitura rápida dos pontos críticos."
         />
         <div className="dashboard-hero-meta">
           <span>Base: crimes digitais</span>

@@ -31,16 +31,15 @@ function ViolenciaSocialPage({ data, onMunicipioClick }) {
         <SectionTitle
           eyebrow="Violência Social"
           title="Perfil de vítimas e distribuição geográfica"
-          description="Análise focada em homicídios com perfil detalhado das vítimas (gênero, raça/cor, faixa etária) e distribuição territorial."
+          description="Análise focada em homicídios com perfil das vítimas e distribuição territorial."
         />
         <div className="dashboard-hero-meta">
           <span>Base: vítimas de violência social</span>
-          <span>Período: janeiro a outubro de 2025</span>
         </div>
       </section>
 
       <section className="kpi-grid">
-        <KpiCard label="Total no recorte" value={formatCompactNumber(total)} note="Ocorrências de violência social" />
+        <KpiCard label="Total no recorte" value={formatCompactNumber(total)} note="Ocorrências de violência social no recorte" />
         <KpiCard label="Município crítico" value={topMunicipio} note="Maior concentração territorial" />
         <KpiCard label="Bairro crítico" value={topBairro} note="Maior recorrência por bairro" />
         <KpiCard label="Faixa etária dominante" value={topFaixa} note="Perfil etário mais presente" />
@@ -60,7 +59,7 @@ function ViolenciaSocialPage({ data, onMunicipioClick }) {
           </ResponsiveContainer>
         </ChartCard>
 
-        <ChartCard title="Municípios mais afetados" subtitle="Ranking consolidado da violência social. Clique em uma barra para filtrar.">
+        <ChartCard title="Municípios mais afetados" subtitle="Ranking consolidado da violência social.">
           <ResponsiveContainer width="100%" height={320}>
             <BarChart data={municipalitySeries} layout="vertical" margin={{ top: 10, right: 20, left: 30, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
@@ -84,7 +83,7 @@ function ViolenciaSocialPage({ data, onMunicipioClick }) {
       </section>
 
       <section className="chart-grid chart-grid-secondary">
-        <ChartCard title="Perfil por gênero das vítimas" subtitle="Distribuição de gênero (barras horizontais)">
+        <ChartCard title="Perfil por gênero das vítimas" subtitle="Distribuição de gênero">
           <ResponsiveContainer width="100%" height={280}>
             <BarChart data={genderSeries} layout="vertical" margin={{ top: 10, right: 20, left: 30, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
@@ -96,7 +95,7 @@ function ViolenciaSocialPage({ data, onMunicipioClick }) {
           </ResponsiveContainer>
         </ChartCard>
 
-        <ChartCard title="Perfil por raça/cor das vítimas" subtitle="Distribuição de raça/cor (barras horizontais)">
+        <ChartCard title="Perfil por raça/cor das vítimas" subtitle="Distribuição de raça/cor">
           <ResponsiveContainer width="100%" height={280}>
             <BarChart data={raceSeries} layout="vertical" margin={{ top: 10, right: 20, left: 60, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />

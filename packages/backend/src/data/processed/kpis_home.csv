@@ -1,2 +1,2 @@
-﻿total_crimes,cidade_critica,horario_critico,crime_dominante,registros_sem_horario,percentual_com_horario
-43775,VILA VELHA,TARDE,CRIMES CONTRA PATRIMÔNIO: ESTELIONATO/FRAUDE,5619,87.16
+﻿total_crimes,total_crimes_valid,percentual_crimes_validos,cidade_critica,horario_critico,crime_dominante,registros_sem_horario,percentual_com_horario
+107399,87710,81.67,VILA VELHA,TARDE,CRIMES CONTRA PATRIMONIO ESTELIONATO FRAUDE,13334,87.58
