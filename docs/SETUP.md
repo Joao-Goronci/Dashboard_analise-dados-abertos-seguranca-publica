@@ -22,7 +22,7 @@ python --version
 ### 1. Clone o repositório
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/LuizHelio-Fim/Dashboard_analise-dados-abertos-seguranca-publica
 cd Dashboard_analise-dados-abertos-seguranca-publica
 ```
 
