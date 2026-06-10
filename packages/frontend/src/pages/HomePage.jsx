@@ -95,7 +95,7 @@ function HomePage({ data, onMunicipioClick }) {
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
               <XAxis dataKey="mes" angle={-35} textAnchor="end" height={58} tickMargin={12} tick={{ fill: '#475569', fontSize: 11 }} />
               <YAxis tick={{ fill: '#475569', fontSize: 12 }} />
-              <Tooltip formatter={(value) => [formatCompactNumber(value), 'Ocorrências']} />
+              <Tooltip formatter={(value, name) => [formatCompactNumber(value), name]} />
               <Line type="monotone" dataKey="patrimonial" name={CATEGORY_LABELS.patrimonial} stroke={CATEGORY_COLORS.patrimonial} strokeWidth={3} dot={{ r: 3 }} />
               <Line type="monotone" dataKey="violencia_social" name={CATEGORY_LABELS.violencia_social} stroke={CATEGORY_COLORS.violencia_social} strokeWidth={3} dot={{ r: 3 }} />
               <Line type="monotone" dataKey="digital" name={CATEGORY_LABELS.digital} stroke={CATEGORY_COLORS.digital} strokeWidth={3} dot={{ r: 3 }} />
